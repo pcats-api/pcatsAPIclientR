@@ -5,9 +5,9 @@
 \title{Fit a linear model using Gaussian Process.}
 \usage{
 staticGP(
-  data = NULL,
-  dataurl = NULL,
+  data = NA,
   datafile = NULL,
+  dataref = NULL,
   outcome,
   treatment,
   x.explanatory = NULL,
@@ -32,8 +32,8 @@ staticGP(
   x.categorical = NULL,
   method = "BART",
   mi.data = NULL,
-  mi.dataurl = NULL,
   mi.datafile = NULL,
+  mi.dataref = NULL,
   sheet = NULL,
   mi.sheet = NULL
 )
@@ -41,9 +41,7 @@ staticGP(
 \arguments{
 \item{data}{A data frame which contains the variables in the model.}
 
-\item{dataurl}{URL from which the data can be loaded (either data or dataurl must be specified)}
-
-\item{datafile}{datafile}
+\item{datafile}{Name of a previously uploaded datafile (either data or dataurl must be specified)}
 
 \item{outcome}{The name of the outcome variable.}
 
@@ -93,9 +91,7 @@ staticGP(
 
 \item{mi.data}{A data frame which contains the imputed data in the model.}
 
-\item{mi.dataurl}{URL from which the imputed data can be loaded.}
-
-\item{mi.datafile}{mi.datafile}
+\item{mi.datafile}{Name of a previously uploaded data file}
 
 \item{sheet}{If \code{dataurl} points to Excel file this variable specifies which sheet to load.}
 

@@ -1,11 +1,11 @@
 Package: pcatsAPIclientR
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
+Title: PCATS Client API Wrapper
+Version: 0.1.1
 Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Maintainer: Michal Kouril <michal.kouril@cchmc.org>
+Description: This package wraps the PCATS REST API into an easier-to-use
+    functions.
 License: GNU General Public License
 Encoding: UTF-8
 LazyData: true

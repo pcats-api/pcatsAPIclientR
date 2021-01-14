@@ -3,8 +3,7 @@
 #'   Gaussian process (GP) prior covariance function is utilized as a matching tool
 #'   which accomplishes matching and flexible outcome modeling in a single step.
 #' @param data A data frame which contains the variables in the model.
-#' @param datafile datafile
-#' @param dataurl URL from which the data can be loaded (either data or dataurl must be specified)
+#' @param datafile Name of a previously uploaded datafile (either data or dataurl must be specified)
 #' @param outcome The name of the outcome variable.
 #' @param treatment The vector of the name of the treatment variables.
 #' @param x.explanatory The vector of the name of the explanatory variables.
@@ -31,17 +30,16 @@
 #' @param pr.values pr.values
 #' @param categorical Ensure the specified fields are categorical
 #' @param mi.data A data frame which contains the imputed data in the model.
-#' @param mi.datafile mi.datafile
-#' @param mi.dataurl URL from which the imputed data can be loaded.
+#' @param mi.datafile Name of a previously uploaded data file
 #' @param sheet If \code{dataurl} points to Excel file this variable specifies which sheet to load.
 #' @param mi.sheet If \code{mi.dataurl} points to Excel file this variable specifies which sheet to load.
 #' @return jobid
 #' @export
 #' @import httr
 #' @import utils
-staticGP <- function(data=NULL,
-                     dataurl=NULL,
+staticGP <- function(
                      datafile=NULL,
+                     dataref=NULL,
                      outcome, treatment,
                      x.explanatory=NULL, x.confounding=NULL,
                      tr.hte=NULL, tr2.hte=NULL,
@@ -58,16 +56,22 @@ staticGP <- function(data=NULL,
                      pr.values=NULL,
                      x.categorical=NULL,
                      method="BART",
-                     mi.data=NULL,
-                     mi.dataurl=NULL,
                      mi.datafile=NULL,
+                     mi.dataref=NULL,
                      sheet=NULL,mi.sheet=NULL) {
 
-
+  data<-NULL
+  if (!is.null(datafile)) {
+    data <- upload_file(datafile)
+  }
+  mi.data<-NULL
+  if (!is.null(mi.datafile)) {
+    mi.data <- upload_file(mi.datafile)
+  }
   res <- POST(url='https://pcats.research.cchmc.org/api/staticgp',
               encode='multipart',
-              body=list(data=(!missing(datafile)?upload_file(datafile):data),
-                        dataurl=dataurl,
+              body=list(data=data,
+                        dataref=dataref,
                         outcome=outcome,
                         treatment=treatment,
                         x.explanatory=x.explanatory,
@@ -90,9 +94,8 @@ staticGP <- function(data=NULL,
                         pr.values=pr.values,
                         x.categorical=x.categorical,
                         method=method,
-                        mi.data=(!missing(mi.datafile)?upload_file(mi.datafile):mi.data),
-                        mi.dataurl=mi.dataurl,
-                        mi.datafile=mi.dataurl,
+                        mi.data=mi.data,
+                        mi.dataref=mi.dataref,
                         sheet=sheet,
                         mi.sheet=mi.sheet))
 

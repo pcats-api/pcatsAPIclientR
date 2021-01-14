@@ -1,0 +1,128 @@
+######################DynamicResults###################################
+
+#' @title Fit a linear model with Gaussian Process at each stage for data with two time points.
+#' @description FIXME: GPMatch is used to fit a linear model within a Bayesian framework.
+#'   Gaussian process (GP) prior covariance function is utilized as a matching tool
+#'   which accomplishes matching and flexible outcome modeling in a single step.
+#'
+#' Return the GP dynamic results.
+#' @param data A data frame which contains the variables in the model. The data should be in the wide format. There is one record for each individual.
+#' @param dataurl URL from which the data can be loaded (either data or dataurl must be specified)
+#' @param stg1.outcome The name of the outcome variable for stage 1.
+#' @param stg2.outcome The name of the outcome variable for stage 2.
+#' @param stg1.treatment The name of the treatment variable for stage 1.
+#' @param stg2.treatment The name of the treatment variable for stage 2.
+#' @param stg1.x.explanatory An optional vector of the names of the explanatory variables for stage 1.
+#' @param stg2.x.explanatory An optional vector of the names of the explanatory variables for stage 2.
+#' @param stg1.x.confounding A vector of the name of the confounding variables for stage 1.
+#' @param stg2.x.confounding A vector of the name of the confounding variables for stage 2.
+#' @param stg1.tr.hte An optional vector specifying categorical variables which may have heterogeneous treatment effect with the treatment variable for stage 1.
+#' @param stg2.tr.hte An optional vector specifying categorical variables which may have heterogeneous treatment effect with the treatment variable for stage 2.
+#' @param stg1.tr.values User-defined values for the calculation of ATE if the treatment variable is continuous for stage 1.
+#' @param stg2.tr.values User-defined values for the calculation of ATE if the treatment variable is continuous for stage 2.
+#' @param burn.num numeric; the number of MCMC 'burn-in' samples, i.e. number of MCMC to be discarded.
+#' @param mcmc.num numeric; the number of MCMC samples after 'burn-in'.
+#' @param stg1.outcome.lb Stage 1 lower bound if \code{stg1.outcome.censor} is TRUE.
+#' @param stg1.outcome.ub Stage 2 upper bound if \code{stg2.outcome.censor} is TRUE.
+#' @param stg1.outcome.type Outcome type ("Continuous" or "Discrete") for stage 1.
+#' @param stg1.outcome.censor logical; if TRUE, stage 1 outcomes are bounded. If FALSE, outcomes are not bounded.
+#' @param stg2.outcome.lb Stage 2 lower bound if \code{stg2.outcome.censor} is TRUE.
+#' @param stg2.outcome.ub Stage 2 upper bound if \code{stg2.outcome.censor} is TRUE.
+#' @param stg2.outcome.type Outcome type ("Continuous" or "Discrete") for stage 2.
+#' @param stg2.outcome.censor logical; if TRUE, stage 2 outcomes are bounded. If FALSE, outcomes are not bounded.
+#' @param categorical A vector of the name of the categorical variables.
+#' @param mi.data A data frame which contains the multiple imputed data. A variable “imputation” should be included in the data to indicate the imputation number.
+#' @param mi.dataurl URL from which the imputed data can be loaded.
+#' @param sheet If \code{dataurl} points to Excel file this variable specifies which sheet to load.
+#' @param mi.sheet If \code{mi.dataurl} points to Excel file this variable specifies which sheet to load.
+#' @return jobid
+#' @export
+#' @import httr
+#' @import utils
+#'
+dynamicGP <- function(
+                     datafile=NULL,
+                     dataref=NULL,
+
+                     # stage 1
+                     stg1.outcome, stg1.treatment,
+                     stg1.x.explanatory=NULL, stg1.x.confounding=NULL,
+                     stg1.tr.hte=NULL,
+                     stg1.tr.values=NULL,
+                     stg1.tr.type="Discrete",
+                     stg1.outcome.type="Continuous",
+                     stg1.outcome.bound_censor="neither",
+                     stg1.outcome.lb=NULL, stg1.outcome.ub=NULL,
+                     stg1.outcome.censor.lv=NULL, stg1.outcome.censor.uv=NULL,
+                     stg1.outcome.censor.yn=NULL, stg1.outcome.link="identity",
+
+                     # stage 2
+                     stg2.outcome, stg2.treatment,
+                     stg2.x.explanatory=NULL, stg2.x.confounding=NULL,
+                     stg2.tr.hte=NULL,
+                     stg2.tr.values=NULL,
+                     stg2.tr.type="Discrete",
+                     stg2.outcome.type="Continuous",
+                     stg2.outcome.bound_censor="neither",
+                     stg2.outcome.lb=NULL, stg2.outcome.ub=NULL,
+                     stg2.outcome.censor.lv=NULL, stg2.outcome.censor.uv=NULL,
+                     stg2.outcome.censor.yn=NULL, stg2.outcome.link="identity",
+
+                     # common parameters
+                     burn.num=1000, mcmc.num=1000,
+                     x.categorical=NULL,
+                     method="BART",
+                     mi.datafile=NULL,mi.dataref=NULL,
+                     sheet=NULL, mi.sheet=NULL
+                     ) {
+
+  data<-NULL
+  if (!is.null(datafile)) {
+    data <- upload_file(datafile)
+  }
+  mi.data<-NULL
+  if (!is.null(mi.datafile)) {
+    mi.data <- upload_file(mi.datafile)
+  }
+  res <- POST(url='https://pcats.research.cchmc.org/api/dynamicgp',
+              encode='multipart',
+              body=list(data=data,
+                        dataref=dataref,
+
+                        stg1.outcome=stg1.outcome, stg1.treatment=stg1.treatment,
+                        stg1.x.explanatory=stg1.x.explanatory, stg1.x.confounding=stg1.x.confounding,
+                        stg1.tr.hte=stg1.tr.hte,
+                        stg1.tr.values=stg1.tr.values,
+                        stg1.tr.type=stg1.tr.type,
+                        stg1.outcome.type=stg1.outcome.type,
+                        stg1.outcome.bound_censor=stg1.outcome.bound_censor,
+                        stg1.outcome.lb=stg1.outcome.lb, stg1.outcome.ub=stg1.outcome.ub,
+                        stg1.outcome.censor.lv=stg1.outcome.censor.lv, stg1.outcome.censor.uv=stg1.outcome.censor.uv,
+                        stg1.outcome.censor.yn=stg1.outcome.censor.yn, stg1.outcome.link=stg1.outcome.link,
+
+                        # stage 2
+                        stg2.outcome=stg2.outcome, stg2.treatment=stg2.treatment,
+                        stg2.x.explanatory=stg2.x.explanatory, stg2.x.confounding=stg2.x.confounding,
+                        stg2.tr.hte=stg2.tr.hte,
+                        stg2.tr.values=stg2.tr.values,
+                        stg2.tr.type=stg2.tr.type,
+                        stg2.outcome.type=stg2.outcome.type,
+                        stg2.outcome.bound_censor=stg2.outcome.bound_censor,
+                        stg2.outcome.lb=stg2.outcome.lb, stg2.outcome.ub=stg2.outcome.ub,
+                        stg2.outcome.censor.lv=stg2.outcome.censor.lv, stg2.outcome.censor.uv=stg2.outcome.censor.uv,
+                        stg2.outcome.censor.yn=stg2.outcome.censor.yn, stg2.outcome.link=stg2.outcome.link,
+
+                        burn.num=burn.num, mcmc.num=mcmc.num,
+                        x.categorical=x.categorical,
+                        method=method,
+                        mi.data=mi.data,
+                        mi.dataref=mi.dataref,
+                        sheet=sheet,
+                        mi.sheet=mi.sheet),
+              )
+
+  cont <- content(res)
+  jobid <- cont$jobid[[1]]
+  jobid
+
+}
