@@ -6,6 +6,7 @@
 #' @param x The name of variable which may have the heterogeneous treatment effect. x should be a categorical variable.
 #' @param control.tr A vector of the values of the treatment variables at all stages as the reference group.
 #' @param treat.tr A vector of the values of the treatment variables at all stages compared to the reference group.
+#' @param pr.values pr.values
 #' @return Return an object of class "cate.effect" which contains a list of the following components:
 #'   \item{out}{A data frame containing the posterior samples of the estimated conditional average treatment effect.}
 #'   \item{hte.est}{The statistical summary results of the conditional average treatment effect}

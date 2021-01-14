@@ -6,6 +6,7 @@
 #' @export
 #' @import httr
 #' @import utils
+#' @import jsonlite
 #'
 results <- function(jobid) {
   output<-jsonlite::fromJSON(paste0("https://pcats.research.cchmc.org/api/job/",jobid,"/results"))

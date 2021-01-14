@@ -7,7 +7,7 @@
 #' @import httr
 #' @import utils
 #'
-ploturl <- function(jobid, type="") {
+ploturl <- function(jobid) {
   output<-paste(readLines(paste0("https://pcats.research.cchmc.org/api/job/",jobid,"/ploturl")),"\n")
   output
 }

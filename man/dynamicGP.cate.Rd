@@ -14,6 +14,8 @@ dynamicGP.cate(jobid, x, control.tr, treat.tr, pr.values = NULL)
 \item{control.tr}{A vector of the values of the treatment variables at all stages as the reference group.}
 
 \item{treat.tr}{A vector of the values of the treatment variables at all stages compared to the reference group.}
+
+\item{pr.values}{pr.values}
 }
 \value{
 Return an object of class "cate.effect" which contains a list of the following components:

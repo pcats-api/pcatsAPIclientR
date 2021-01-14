@@ -6,6 +6,7 @@
 #' @export
 #' @import httr
 #' @import utils
+#' @import jsonlite
 #'
 job_status <- function(jobid) {
   if (is.null(jobid)) {

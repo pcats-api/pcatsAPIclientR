@@ -2,8 +2,8 @@
 #' @description FIXME: GPMatch is used to fit a linear model within a Bayesian framework.
 #'   Gaussian process (GP) prior covariance function is utilized as a matching tool
 #'   which accomplishes matching and flexible outcome modeling in a single step.
-#' @param data A data frame which contains the variables in the model.
-#' @param datafile Name of a previously uploaded datafile (either data or dataurl must be specified)
+#' @param datafile File to upload (.csv or .xls)
+#' @param dataref Reference to already uploaded file.
 #' @param outcome The name of the outcome variable.
 #' @param treatment The vector of the name of the treatment variables.
 #' @param x.explanatory The vector of the name of the explanatory variables.
@@ -29,8 +29,8 @@
 #' @param tr2.values user-defined values for the calculation of ATE if the second treatment variable is continuous
 #' @param pr.values pr.values
 #' @param categorical Ensure the specified fields are categorical
-#' @param mi.data A data frame which contains the imputed data in the model.
-#' @param mi.datafile Name of a previously uploaded data file
+#' @param mi.datafile File to upload (.csv or .xls) that contains the imputed data in the model.
+#' @param mi.dataref Reference to already uploaded file that contains the imputed data in the model.
 #' @param sheet If \code{dataurl} points to Excel file this variable specifies which sheet to load.
 #' @param mi.sheet If \code{mi.dataurl} points to Excel file this variable specifies which sheet to load.
 #' @return jobid
@@ -62,11 +62,11 @@ staticGP <- function(
 
   data<-NULL
   if (!is.null(datafile)) {
-    data <- upload_file(datafile)
+    data <- httr::upload_file(datafile)
   }
   mi.data<-NULL
   if (!is.null(mi.datafile)) {
-    mi.data <- upload_file(mi.datafile)
+    mi.data <- httr::upload_file(mi.datafile)
   }
   res <- POST(url='https://pcats.research.cchmc.org/api/staticgp',
               encode='multipart',

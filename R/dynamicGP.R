@@ -6,8 +6,8 @@
 #'   which accomplishes matching and flexible outcome modeling in a single step.
 #'
 #' Return the GP dynamic results.
-#' @param data A data frame which contains the variables in the model. The data should be in the wide format. There is one record for each individual.
-#' @param dataurl URL from which the data can be loaded (either data or dataurl must be specified)
+#' @param datafile File to upload (.csv or .xls)
+#' @param dataref Reference to already uploaded file.
 #' @param stg1.outcome The name of the outcome variable for stage 1.
 #' @param stg2.outcome The name of the outcome variable for stage 2.
 #' @param stg1.treatment The name of the treatment variable for stage 1.
@@ -30,9 +30,23 @@
 #' @param stg2.outcome.ub Stage 2 upper bound if \code{stg2.outcome.censor} is TRUE.
 #' @param stg2.outcome.type Outcome type ("Continuous" or "Discrete") for stage 2.
 #' @param stg2.outcome.censor logical; if TRUE, stage 2 outcomes are bounded. If FALSE, outcomes are not bounded.
+#' @param stg1.tr.type stg1.tr.type
+#' @param stg1.outcome.bound_censor stg1.outcome.bound_censor
+#' @param stg1.outcome.censor.lv stg1.outcome.censor.lv
+#' @param stg1.outcome.censor.uv stg1.outcome.censor.uv
+#' @param stg1.outcome.censor.yn stg1.outcome.censor.yn
+#' @param stg1.outcome.link stg1.outcome.link
+#' @param stg2.tr.type stg2.tr.type
+#' @param stg2.outcome.bound_censor stg2.outcome.bound_censor
+#' @param stg2.outcome.censor.lv stg2.outcome.censor.lv
+#' @param stg2.outcome.censor.uv stg2.outcome.censor.uv
+#' @param stg2.outcome.censor.yn stg2.outcome.censor.yn
+#' @param stg2.outcome.link stg2.outcome.link
+#' @param x.categorical x.categorical
+#' @param method method
 #' @param categorical A vector of the name of the categorical variables.
-#' @param mi.data A data frame which contains the multiple imputed data. A variable “imputation” should be included in the data to indicate the imputation number.
-#' @param mi.dataurl URL from which the imputed data can be loaded.
+#' @param mi.datafile File to upload (.csv or .xls) that contains the imputed data in the model.
+#' @param mi.dataref Reference to already uploaded file that contains the imputed data in the model.
 #' @param sheet If \code{dataurl} points to Excel file this variable specifies which sheet to load.
 #' @param mi.sheet If \code{mi.dataurl} points to Excel file this variable specifies which sheet to load.
 #' @return jobid

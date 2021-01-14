@@ -5,7 +5,6 @@
 \title{Fit a linear model with Gaussian Process at each stage for data with two time points.}
 \usage{
 dynamicGP(
-  data = NA,
   datafile = NULL,
   dataref = NULL,
   stg1.outcome,
@@ -42,7 +41,6 @@ dynamicGP(
   mcmc.num = 1000,
   x.categorical = NULL,
   method = "BART",
-  mi.data = NA,
   mi.datafile = NULL,
   mi.dataref = NULL,
   sheet = NULL,
@@ -50,7 +48,9 @@ dynamicGP(
 )
 }
 \arguments{
-\item{data}{A data frame which contains the variables in the model. The data should be in the wide format. There is one record for each individual.}
+\item{datafile}{File to upload (.csv or .xls)}
+
+\item{dataref}{Reference to already uploaded file.}
 
 \item{stg1.outcome}{The name of the outcome variable for stage 1.}
 
@@ -64,11 +64,23 @@ dynamicGP(
 
 \item{stg1.tr.values}{User-defined values for the calculation of ATE if the treatment variable is continuous for stage 1.}
 
+\item{stg1.tr.type}{stg1.tr.type}
+
 \item{stg1.outcome.type}{Outcome type ("Continuous" or "Discrete") for stage 1.}
+
+\item{stg1.outcome.bound_censor}{stg1.outcome.bound_censor}
 
 \item{stg1.outcome.lb}{Stage 1 lower bound if \code{stg1.outcome.censor} is TRUE.}
 
 \item{stg1.outcome.ub}{Stage 2 upper bound if \code{stg2.outcome.censor} is TRUE.}
+
+\item{stg1.outcome.censor.lv}{stg1.outcome.censor.lv}
+
+\item{stg1.outcome.censor.uv}{stg1.outcome.censor.uv}
+
+\item{stg1.outcome.censor.yn}{stg1.outcome.censor.yn}
+
+\item{stg1.outcome.link}{stg1.outcome.link}
 
 \item{stg2.outcome}{The name of the outcome variable for stage 2.}
 
@@ -82,31 +94,45 @@ dynamicGP(
 
 \item{stg2.tr.values}{User-defined values for the calculation of ATE if the treatment variable is continuous for stage 2.}
 
+\item{stg2.tr.type}{stg2.tr.type}
+
 \item{stg2.outcome.type}{Outcome type ("Continuous" or "Discrete") for stage 2.}
+
+\item{stg2.outcome.bound_censor}{stg2.outcome.bound_censor}
 
 \item{stg2.outcome.lb}{Stage 2 lower bound if \code{stg2.outcome.censor} is TRUE.}
 
 \item{stg2.outcome.ub}{Stage 2 upper bound if \code{stg2.outcome.censor} is TRUE.}
 
+\item{stg2.outcome.censor.lv}{stg2.outcome.censor.lv}
+
+\item{stg2.outcome.censor.uv}{stg2.outcome.censor.uv}
+
+\item{stg2.outcome.censor.yn}{stg2.outcome.censor.yn}
+
+\item{stg2.outcome.link}{stg2.outcome.link}
+
 \item{burn.num}{numeric; the number of MCMC 'burn-in' samples, i.e. number of MCMC to be discarded.}
 
 \item{mcmc.num}{numeric; the number of MCMC samples after 'burn-in'.}
 
-\item{mi.data}{A data frame which contains the multiple imputed data. A variable “imputation” should be included in the data to indicate the imputation number.}
+\item{x.categorical}{x.categorical}
+
+\item{method}{method}
+
+\item{mi.datafile}{File to upload (.csv or .xls) that contains the imputed data in the model.}
+
+\item{mi.dataref}{Reference to already uploaded file that contains the imputed data in the model.}
 
 \item{sheet}{If \code{dataurl} points to Excel file this variable specifies which sheet to load.}
 
 \item{mi.sheet}{If \code{mi.dataurl} points to Excel file this variable specifies which sheet to load.}
-
-\item{dataurl}{URL from which the data can be loaded (either data or dataurl must be specified)}
 
 \item{stg1.outcome.censor}{logical; if TRUE, stage 1 outcomes are bounded. If FALSE, outcomes are not bounded.}
 
 \item{stg2.outcome.censor}{logical; if TRUE, stage 2 outcomes are bounded. If FALSE, outcomes are not bounded.}
 
 \item{categorical}{A vector of the name of the categorical variables.}
-
-\item{mi.dataurl}{URL from which the imputed data can be loaded.}
 }
 \value{
 jobid
