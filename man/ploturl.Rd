@@ -4,7 +4,7 @@
 \alias{ploturl}
 \title{Return plot URL}
 \usage{
-ploturl(jobid, type = "")
+ploturl(jobid, plottype = "")
 }
 \arguments{
 \item{jobid}{Job ID of the previously submitted job}
