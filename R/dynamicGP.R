@@ -1,7 +1,7 @@
 ######################DynamicResults###################################
 
-#' @title Fit a linear model with Gaussian Process at each stage for data with two time points.
-#' @description FIXME: GPMatch is used to fit a linear model within a Bayesian framework.
+#' @title Performs a data analysis for data with adaptive treatments.
+#' @description: GPMatch is used to fit a linear model within a Bayesian framework.
 #'   Gaussian process (GP) prior covariance function is utilized as a matching tool
 #'   which accomplishes matching and flexible outcome modeling in a single step.
 #'
