@@ -1,49 +1,55 @@
 ######################DynamicResults###################################
 
 #' @title Performs a data analysis for data with adaptive treatments.
-#' @description: GPMatch is used to fit a linear model within a Bayesian framework.
-#'   Gaussian process (GP) prior covariance function is utilized as a matching tool
-#'   which accomplishes matching and flexible outcome modeling in a single step.
-#'
-#' Return the GP dynamic results.
+#' @description: Performs Bayesian's Gaussian process regression or Bayesian
+#'    additive regression tree for data with adaptive treatment(s).
 #' @param datafile File to upload (.csv or .xls)
 #' @param dataref Reference to already uploaded file.
-#' @param stg1.outcome The name of the outcome variable for stage 1.
-#' @param stg2.outcome The name of the outcome variable for stage 2.
+#' @param method The method to be used. "GP" for GP method and "BART" for BART method. The default value is "BART".
+#' @param stg1.outcome The name of the intermediate outcome variable for stage 1.
 #' @param stg1.treatment The name of the treatment variable for stage 1.
-#' @param stg2.treatment The name of the treatment variable for stage 2.
-#' @param stg1.x.explanatory An optional vector of the names of the explanatory variables for stage 1.
-#' @param stg2.x.explanatory An optional vector of the names of the explanatory variables for stage 2.
+#' @param stg1.x.explanatory A vector of the name of the explanatory variables for stage 1.
 #' @param stg1.x.confounding A vector of the name of the confounding variables for stage 1.
-#' @param stg2.x.confounding A vector of the name of the confounding variables for stage 2.
 #' @param stg1.tr.hte An optional vector specifying categorical variables which may have heterogeneous treatment effect with the treatment variable for stage 1.
-#' @param stg2.tr.hte An optional vector specifying categorical variables which may have heterogeneous treatment effect with the treatment variable for stage 2.
+#' @param stg1.outcome.bound_censor The default value is "neither". 
+#'    "neither" if the intermediate outcome is not bounded or censored.
+#'    "bounded" if the intermediate outcome is bounded.
+#'    "censored" if the intermediate outcome is censored.
+#' @param stg1.outcome.lb Stage 1 lower bound if the intermediate outcome is bounded.
+#' @param stg1.outcome.ub Stage 1 upper bound if the intermediate outcome is bounded.
+#' @param stg1.outcome.type Intermediate outcome type ("Continuous" or "Discrete") for stage 1.
+#' @param stg1.outcome.censor.yn Censoring variable if the intermediate outcome is censored.
+#' @param stg1.outcome.censor.lv lower variable of censored interval if the intermediate outcome is censored.
+#' @param stg1.outcome.censor.uv upper variable of censored interval if the intermediate outcome is censored.
+#' @param stg1.outcome.link function for the intermediate outcome; the default value is ``identity''.
+#'    "identity" if no transformation needed. 
+#'    "log" for log transformation. 
+#'    "logit" for logit transformation.
 #' @param stg1.tr.values User-defined values for the calculation of ATE if the treatment variable is continuous for stage 1.
+#' @param stg1.tr.type The type of treatment at stage 1. "Continuous" for continuous treatment and "Discrete" for categorical treatment. The default value is "Discrete".
+#' @param stg1.pr.values An optional vector of user-defined values of c for PrTE at stage 1.
+#' @param stg2.outcome The name of the outcome variable for stage 2.
+#' @param stg2.treatment The name of the treatment variable for stage 2.
+#' @param stg2.x.explanatory A vector of the name of the explanatory variables for stage 2.
+#' @param stg2.x.confounding A vector of the name of the confounding variables for stage 2.
+#' @param stg2.tr.hte An optional vector specifying categorical variables which may have heterogeneous treatment effect with the treatment variable for stage 2.
 #' @param stg2.tr.values User-defined values for the calculation of ATE if the treatment variable is continuous for stage 2.
-#' @param burn.num numeric; the number of MCMC 'burn-in' samples, i.e. number of MCMC to be discarded.
-#' @param mcmc.num numeric; the number of MCMC samples after 'burn-in'.
-#' @param stg1.outcome.lb Stage 1 lower bound if \code{stg1.outcome.censor} is TRUE.
-#' @param stg1.outcome.ub Stage 2 upper bound if \code{stg2.outcome.censor} is TRUE.
-#' @param stg1.outcome.type Outcome type ("Continuous" or "Discrete") for stage 1.
-#' @param stg1.outcome.censor logical; if TRUE, stage 1 outcomes are bounded. If FALSE, outcomes are not bounded.
-#' @param stg2.outcome.lb Stage 2 lower bound if \code{stg2.outcome.censor} is TRUE.
-#' @param stg2.outcome.ub Stage 2 upper bound if \code{stg2.outcome.censor} is TRUE.
+#' @param stg2.outcome_censor The default value is "neither". 
+#'    "neither" if the intermediate outcome is not bounded or censored.
+#'    "bounded" if the intermediate outcome is bounded.
+#'    "censored" if the intermediate outcome is censored.
+#' @param stg2.outcome.lb Stage 2 lower bound if the outcome is bounded.
+#' @param stg2.outcome.ub Stage 2 upper bound if the outcome is bounded.
 #' @param stg2.outcome.type Outcome type ("Continuous" or "Discrete") for stage 2.
-#' @param stg2.outcome.censor logical; if TRUE, stage 2 outcomes are bounded. If FALSE, outcomes are not bounded.
-#' @param stg1.tr.type stg1.tr.type
-#' @param stg1.outcome.bound_censor stg1.outcome.bound_censor
-#' @param stg1.outcome.censor.lv stg1.outcome.censor.lv
-#' @param stg1.outcome.censor.uv stg1.outcome.censor.uv
-#' @param stg1.outcome.censor.yn stg1.outcome.censor.yn
-#' @param stg1.outcome.link stg1.outcome.link
 #' @param stg2.tr.type stg2.tr.type
 #' @param stg2.outcome.bound_censor stg2.outcome.bound_censor
 #' @param stg2.outcome.censor.lv stg2.outcome.censor.lv
 #' @param stg2.outcome.censor.uv stg2.outcome.censor.uv
 #' @param stg2.outcome.censor.yn stg2.outcome.censor.yn
 #' @param stg2.outcome.link stg2.outcome.link
+#' @param burn.num numeric; the number of MCMC 'burn-in' samples, i.e. number of MCMC to be discarded.
+#' @param mcmc.num numeric; the number of MCMC samples after 'burn-in'.
 #' @param x.categorical x.categorical
-#' @param method method
 #' @param categorical A vector of the name of the categorical variables.
 #' @param mi.datafile File to upload (.csv or .xls) that contains the imputed data in the model.
 #' @param mi.dataref Reference to already uploaded file that contains the imputed data in the model.
@@ -57,7 +63,8 @@
 dynamicGP <- function(
                      datafile=NULL,
                      dataref=NULL,
-
+                     method="BART",
+  
                      # stage 1
                      stg1.outcome, stg1.treatment,
                      stg1.x.explanatory=NULL, stg1.x.confounding=NULL,
@@ -85,7 +92,6 @@ dynamicGP <- function(
                      # common parameters
                      burn.num=1000, mcmc.num=1000,
                      x.categorical=NULL,
-                     method="BART",
                      mi.datafile=NULL,mi.dataref=NULL,
                      sheet=NULL, mi.sheet=NULL
                      ) {
