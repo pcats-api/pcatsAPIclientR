@@ -8,9 +8,7 @@
 #' @param treat.tr The value of the treatment variable compared to the reference group.
 #' @param pr.values An optional vector of user-defined values of c for PrCTE.
 #' @return
-#' Return an object of class "cate.effect" which contains a list of the following components:
-#'  \item{out}{A data frame containing the posterior samples of the estimated conditional average treatment effect.}
-#'  \item{hte.est}{The statistical summary results of the conditional average treatment effect.}
+#' Return jobid
 #' @export
 #'
 staticGP.cate <- function(jobid,x,control.tr,treat.tr,pr.values=NULL) {
