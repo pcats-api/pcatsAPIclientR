@@ -33,7 +33,6 @@
 #' @param stg2.x.explanatory A vector of the name of the explanatory variables for stage 2.
 #' @param stg2.x.confounding A vector of the name of the confounding variables for stage 2.
 #' @param stg2.tr.hte An optional vector specifying categorical variables which may have heterogeneous treatment effect with the treatment variable for stage 2.
-#' @param stg2.tr.values User-defined values for the calculation of ATE if the treatment variable is continuous for stage 2.
 #' @param stg2.outcome_censor The default value is "neither". 
 #'    "neither" if the intermediate outcome is not bounded or censored.
 #'    "bounded" if the intermediate outcome is bounded.
@@ -41,20 +40,23 @@
 #' @param stg2.outcome.lb Stage 2 lower bound if the outcome is bounded.
 #' @param stg2.outcome.ub Stage 2 upper bound if the outcome is bounded.
 #' @param stg2.outcome.type Outcome type ("Continuous" or "Discrete") for stage 2.
-#' @param stg2.tr.type stg2.tr.type
-#' @param stg2.outcome.bound_censor stg2.outcome.bound_censor
-#' @param stg2.outcome.censor.lv stg2.outcome.censor.lv
-#' @param stg2.outcome.censor.uv stg2.outcome.censor.uv
-#' @param stg2.outcome.censor.yn stg2.outcome.censor.yn
-#' @param stg2.outcome.link stg2.outcome.link
-#' @param burn.num numeric; the number of MCMC 'burn-in' samples, i.e. number of MCMC to be discarded.
-#' @param mcmc.num numeric; the number of MCMC samples after 'burn-in'.
-#' @param x.categorical x.categorical
-#' @param categorical A vector of the name of the categorical variables.
+#' @param stg2.outcome.censor.yn Censoring variable if the outcome is censored.
+#' @param stg2.outcome.censor.lv lower variable of censored interval if the outcome is censored.
+#' @param stg2.outcome.censor.uv upper variable of censored interval if the outcome is censored.
+#' @param stg2.outcome.link function for the outcome; the default value is ``identity''.
+#'    "identity" if no transformation needed. 
+#'    "log" for log transformation. 
+#'    "logit" for logit transformation.
+#' @param stg2.tr.values User-defined values for the calculation of ATE if the treatment variable is continuous for stage 2.
+#' @param stg2.tr.type The type of treatment at stage 2. "Continuous" for continuous treatment and "Discrete" for categorical treatment. The default value is "Discrete".
+#' @param stg2.pr.values An optional vector of user-defined values of c for PrTE at stage 2.
+#' @param burn.num numeric; the number of MCMC 'burn-in' samples, i.e. number of MCMC to be discarded. The default value is 500.
+#' @param mcmc.num numeric; the number of MCMC samples after 'burn-in'. The default value is 500.
+#' @param x.categorical A vector of the name of categorical variables in data.
 #' @param mi.datafile File to upload (.csv or .xls) that contains the imputed data in the model.
 #' @param mi.dataref Reference to already uploaded file that contains the imputed data in the model.
-#' @param sheet If \code{dataurl} points to Excel file this variable specifies which sheet to load.
-#' @param mi.sheet If \code{mi.dataurl} points to Excel file this variable specifies which sheet to load.
+#' @param sheet If \code{datafile} or \code{dataref} points to an Excel file this variable specifies which sheet to load.
+#' @param mi.sheet If \code{mi.datafile} or \code{mi.dataurl} points to an Excel file this variable specifies which sheet to load.
 #' @return jobid
 #' @export
 #' @import httr
@@ -76,6 +78,7 @@ dynamicGP <- function(
                      stg1.outcome.lb=NULL, stg1.outcome.ub=NULL,
                      stg1.outcome.censor.lv=NULL, stg1.outcome.censor.uv=NULL,
                      stg1.outcome.censor.yn=NULL, stg1.outcome.link="identity",
+                     stg1.pr.values=NULL,
 
                      # stage 2
                      stg2.outcome, stg2.treatment,
@@ -88,9 +91,10 @@ dynamicGP <- function(
                      stg2.outcome.lb=NULL, stg2.outcome.ub=NULL,
                      stg2.outcome.censor.lv=NULL, stg2.outcome.censor.uv=NULL,
                      stg2.outcome.censor.yn=NULL, stg2.outcome.link="identity",
+                     stg2.pr.values=NULL,
 
                      # common parameters
-                     burn.num=1000, mcmc.num=1000,
+                     burn.num=500, mcmc.num=500,
                      x.categorical=NULL,
                      mi.datafile=NULL,mi.dataref=NULL,
                      sheet=NULL, mi.sheet=NULL
@@ -119,6 +123,7 @@ dynamicGP <- function(
                         stg1.outcome.lb=stg1.outcome.lb, stg1.outcome.ub=stg1.outcome.ub,
                         stg1.outcome.censor.lv=stg1.outcome.censor.lv, stg1.outcome.censor.uv=stg1.outcome.censor.uv,
                         stg1.outcome.censor.yn=stg1.outcome.censor.yn, stg1.outcome.link=stg1.outcome.link,
+                        stg1.pr.values=stg1.pr.values,
 
                         # stage 2
                         stg2.outcome=stg2.outcome, stg2.treatment=stg2.treatment,
@@ -131,6 +136,7 @@ dynamicGP <- function(
                         stg2.outcome.lb=stg2.outcome.lb, stg2.outcome.ub=stg2.outcome.ub,
                         stg2.outcome.censor.lv=stg2.outcome.censor.lv, stg2.outcome.censor.uv=stg2.outcome.censor.uv,
                         stg2.outcome.censor.yn=stg2.outcome.censor.yn, stg2.outcome.link=stg2.outcome.link,
+                        stg2.pr.values=stg2.pr.values,
 
                         burn.num=burn.num, mcmc.num=mcmc.num,
                         x.categorical=x.categorical,
