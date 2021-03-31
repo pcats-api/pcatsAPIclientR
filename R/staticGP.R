@@ -3,14 +3,8 @@
 #'    additive regression tree for data with non-adaptive treatment(s).
 #' @param datafile File to upload (.csv or .xls)
 #' @param dataref Reference to already uploaded file.
+#' @param method The method to be used. "GP" for GP method and "BART" for BART method. The default value is "BART".
 #' @param outcome The name of the outcome variable.
-#' @param treatment The vector of the name of the treatment variables. Users can input at most two treatment variables.
-#' @param x.explanatory The vector of the name of the explanatory variables.
-#' @param x.confounding The vector of the name of the confounding variables.
-#' @param tr.hte An optional vector specifying variables which may have heterogeneous treatment effect with the first treatment variable
-#' @param tr2.hte An optional vector specifying variables which may have heterogeneous treatment effect with the second treatment variable
-#' @param burn.num numeric; the number of MCMC 'burn-in' samples, i.e. number of MCMC to be discarded.
-#' @param mcmc.num numeric; the number of MCMC samples after 'burn-in'.
 #' @param outcome.type Outcome type ("Continuous" or "Discrete"). The default value is "Continuous".
 #' @param outcome.bound_censor The default value is "neither". 
 #'    "neither" if the outcome is not bounded or censored.
@@ -25,40 +19,47 @@
 #'    "identity" if no transformation needed. 
 #'    "log" for log transformation. 
 #'    "logit" for logit transformation.
+#' @param treatment The vector of the name of the treatment variables. Users can input at most two treatment variables.
+#' @param x.explanatory The vector of the name of the explanatory variables.
+#' @param x.confounding The vector of the name of the confounding variables.
 #' @param tr.type The type of the first treatment. "Continuous" for continuous treatment and "Discrete" for categorical treatment. The default value is "Discrete". 
 #' @param tr2.type The type of the second treatment if available. "Continuous" for continuous treatment and "Discrete" for categorical treatment. The default value is "Discrete". 
 #' @param tr.values user-defined values for the calculation of ATE if the first treatment variable is continuous
 #' @param tr2.values user-defined values for the calculation of ATE if the second treatment variable is continuous
 #' @param pr.values An optional vector of user-defined values of c for PrTE.
+#' @param tr.hte An optional vector specifying variables which may have heterogeneous treatment effect with the first treatment variable
+#' @param tr2.hte An optional vector specifying variables which may have heterogeneous treatment effect with the second treatment variable
+#' @param burn.num numeric; the number of MCMC 'burn-in' samples, i.e. number of MCMC to be discarded.
+#' @param mcmc.num numeric; the number of MCMC samples after 'burn-in'.
 #' @param x.categorical An optional vector of the name of categorical variables in data.
-#' @param method The method to be used. "GP" for GP method and "BART" for BART method. The default value is "BART".
 #' @param mi.datafile File to upload (.csv or .xls) that contains the imputed data in the model.
 #' @param mi.dataref Reference to already uploaded file that contains the imputed data in the model.
-#' @param sheet If \code{dataref} points to Excel file this variable specifies which sheet to load.
-#' @param mi.sheet If \code{mi.dataurl} points to Excel file this variable specifies which sheet to load.
+#' @param sheet If \code{datafile} or \code{dataref} points to an Excel file this variable specifies which sheet to load.
+#' @param mi.sheet If \code{mi.datafile} or \code{mi.dataurl} points to an Excel file this variable specifies which sheet to load.
 #' @return jobid
 #' @export
 #' @import httr
 #' @import utils
 staticGP <- function(
                      datafile=NULL,
-                     dataref=NULL,
-                     outcome, treatment,
-                     x.explanatory=NULL, x.confounding=NULL,
-                     tr.hte=NULL, tr2.hte=NULL,
-                     burn.num=500, mcmc.num=500,
+                     dataref=NULL,  
+                     method="BART",
+                     outcome, 
                      outcome.type="Continuous",  
                      outcome.bound_censor="neither",
                      outcome.lb=NULL, outcome.ub=NULL,  
                      outcome.censor.yn=NULL,
                      outcome.censor.lv=NULL, outcome.censor.uv=NULL,
-                     outcome.link="identity",
+                     outcome.link="identity",  
+                     treatment,
+                     x.explanatory=NULL, x.confounding=NULL,
                      tr.type="Discrete",
                      tr2.type="Discrete",
                      tr.values=NULL, tr2.values=NULL,
                      pr.values=NULL,
+                     tr.hte=NULL, tr2.hte=NULL,
+                     burn.num=500, mcmc.num=500,
                      x.categorical=NULL,
-                     method="BART",
                      mi.datafile=NULL,
                      mi.dataref=NULL,
                      sheet=NULL,mi.sheet=NULL) {
