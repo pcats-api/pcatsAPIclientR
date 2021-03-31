@@ -29,8 +29,8 @@
 #' @param pr.values An optional vector of user-defined values of c for PrTE.
 #' @param tr.hte An optional vector specifying variables which may have heterogeneous treatment effect with the first treatment variable
 #' @param tr2.hte An optional vector specifying variables which may have heterogeneous treatment effect with the second treatment variable
-#' @param burn.num numeric; the number of MCMC 'burn-in' samples, i.e. number of MCMC to be discarded.
-#' @param mcmc.num numeric; the number of MCMC samples after 'burn-in'.
+#' @param burn.num numeric; the number of MCMC 'burn-in' samples, i.e. number of MCMC to be discarded. The default value is 500.
+#' @param mcmc.num numeric; the number of MCMC samples after 'burn-in'. The default value is 500.
 #' @param x.categorical An optional vector of the name of categorical variables in data.
 #' @param mi.datafile File to upload (.csv or .xls) that contains the imputed data in the model.
 #' @param mi.dataref Reference to already uploaded file that contains the imputed data in the model.
