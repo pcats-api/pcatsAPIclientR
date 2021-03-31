@@ -15,7 +15,7 @@
 #' @param outcome.censor.yn Censoring variable if outcome is censored.
 #' @param outcome.censor.lv lower variable of censored interval if outcome is censored.
 #' @param outcome.censor.uv upper variable of censored interval if outcome is censored.
-#' @param outcome.link function for outcome; the default value is ``identity''.
+#' @param outcome.link function for outcome; the default value is "identity".
 #'    "identity" if no transformation needed. 
 #'    "log" for log transformation. 
 #'    "logit" for logit transformation.
