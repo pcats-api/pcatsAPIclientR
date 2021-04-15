@@ -32,7 +32,8 @@
 #' @param stg2.treatment The name of the treatment variable for stage 2.
 #' @param stg2.x.explanatory A vector of the name of the explanatory variables for stage 2.
 #' @param stg2.x.confounding A vector of the name of the confounding variables for stage 2.
-#' @param stg2.tr.hte An optional vector specifying categorical variables which may have heterogeneous treatment effect with the treatment variable for stage 2.
+#' @param stg2.tr1.hte At stage 2, an optional vector specifying cate-gorical variables which may have heterogeneoustreatment effect with the stage 1 treatment variable
+#' @param stg2.tr2.hte At stage 2, an optional vector specifying cate-gorical variables which may have heterogeneoustreatment effect with the stage 2 treatment variable
 #' @param stg2.outcome_censor The default value is "neither". 
 #'    "neither" if the intermediate outcome is not bounded or censored.
 #'    "bounded" if the intermediate outcome is bounded.
