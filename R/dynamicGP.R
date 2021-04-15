@@ -84,7 +84,8 @@ dynamicGP <- function(
                      # stage 2
                      stg2.outcome, stg2.treatment,
                      stg2.x.explanatory=NULL, stg2.x.confounding=NULL,
-                     stg2.tr.hte=NULL,
+                     stg2.tr1.hte=NULL,
+                     stg2.tr2.hte=NULL,
                      stg2.tr.values=NULL,
                      stg2.tr.type="Discrete",
                      stg2.outcome.type="Continuous",
@@ -129,7 +130,8 @@ dynamicGP <- function(
                         # stage 2
                         stg2.outcome=stg2.outcome, stg2.treatment=stg2.treatment,
                         stg2.x.explanatory=stg2.x.explanatory, stg2.x.confounding=stg2.x.confounding,
-                        stg2.tr.hte=stg2.tr.hte,
+                        stg2.tr1.hte=stg2.tr1.hte,
+                        stg2.tr2.hte=stg2.tr2.hte,
                         stg2.tr.values=stg2.tr.values,
                         stg2.tr.type=stg2.tr.type,
                         stg2.outcome.type=stg2.outcome.type,
