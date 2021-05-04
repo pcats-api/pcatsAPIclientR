@@ -34,7 +34,7 @@
 #' @param stg2.x.confounding A vector of the name of the confounding variables for stage 2.
 #' @param stg2.tr1.hte At stage 2, an optional vector specifying cate-gorical variables which may have heterogeneoustreatment effect with the stage 1 treatment variable
 #' @param stg2.tr2.hte At stage 2, an optional vector specifying cate-gorical variables which may have heterogeneoustreatment effect with the stage 2 treatment variable
-#' @param stg2.outcome_censor The default value is "neither". 
+#' @param stg2.outcome.bound_censor The default value is "neither". 
 #'    "neither" if the intermediate outcome is not bounded or censored.
 #'    "bounded" if the intermediate outcome is bounded.
 #'    "censored" if the intermediate outcome is censored.
@@ -69,38 +69,50 @@ dynamicGP <- function(
                      method="BART",
   
                      # stage 1
-                     stg1.outcome, stg1.treatment,
-                     stg1.x.explanatory=NULL, stg1.x.confounding=NULL,
+                     stg1.outcome,
+                     stg1.treatment,
+                     stg1.x.explanatory=NULL,
+                     stg1.x.confounding=NULL,
                      stg1.tr.hte=NULL,
                      stg1.tr.values=NULL,
                      stg1.tr.type="Discrete",
                      stg1.outcome.type="Continuous",
                      stg1.outcome.bound_censor="neither",
-                     stg1.outcome.lb=NULL, stg1.outcome.ub=NULL,
-                     stg1.outcome.censor.lv=NULL, stg1.outcome.censor.uv=NULL,
-                     stg1.outcome.censor.yn=NULL, stg1.outcome.link="identity",
+                     stg1.outcome.lb=NULL,
+                     stg1.outcome.ub=NULL,
+                     stg1.outcome.censor.lv=NULL,
+                     stg1.outcome.censor.uv=NULL,
+                     stg1.outcome.censor.yn=NULL,
+                     stg1.outcome.link="identity",
                      stg1.pr.values=NULL,
 
                      # stage 2
-                     stg2.outcome, stg2.treatment,
-                     stg2.x.explanatory=NULL, stg2.x.confounding=NULL,
+                     stg2.outcome,
+                     stg2.treatment,
+                     stg2.x.explanatory=NULL,
+                     stg2.x.confounding=NULL,
                      stg2.tr1.hte=NULL,
                      stg2.tr2.hte=NULL,
                      stg2.tr.values=NULL,
                      stg2.tr.type="Discrete",
                      stg2.outcome.type="Continuous",
                      stg2.outcome.bound_censor="neither",
-                     stg2.outcome.lb=NULL, stg2.outcome.ub=NULL,
-                     stg2.outcome.censor.lv=NULL, stg2.outcome.censor.uv=NULL,
-                     stg2.outcome.censor.yn=NULL, stg2.outcome.link="identity",
+                     stg2.outcome.lb=NULL,
+                     stg2.outcome.ub=NULL,
+                     stg2.outcome.censor.lv=NULL,
+                     stg2.outcome.censor.uv=NULL,
+                     stg2.outcome.censor.yn=NULL,
+                     stg2.outcome.link="identity",
                      stg2.pr.values=NULL,
 
                      # common parameters
-                     burn.num=500, mcmc.num=500,
+                     burn.num=500,
+                     mcmc.num=500,
                      x.categorical=NULL,
-                     mi.datafile=NULL,mi.dataref=NULL,
-                     sheet=NULL, mi.sheet=NULL
-                     ) {
+                     mi.datafile=NULL,
+                     mi.dataref=NULL,
+                     sheet=NULL,
+                     mi.sheet=NULL) {
 
   data<-NULL
   if (!is.null(datafile)) {

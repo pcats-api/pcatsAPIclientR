@@ -10,7 +10,12 @@
 #' @return jobid
 #' @export
 #'
-dynamicGP.cate <- function(jobid,x,control.tr,treat.tr,pr.values=NULL) {
+dynamicGP.cate <- function(
+                           jobid,
+                           x,
+                           control.tr,
+                           treat.tr,
+                           pr.values=NULL) {
 
     res <- POST(url=paste0('https://pcats.research.cchmc.org/api/job/',jobid,'/dynamicgp.cate'),
                 encode='multipart',

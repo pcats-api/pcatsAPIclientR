@@ -11,7 +11,12 @@
 #' Return jobid
 #' @export
 #'
-staticGP.cate <- function(jobid,x,control.tr,treat.tr,pr.values=NULL) {
+staticGP.cate <- function(
+                          jobid,
+                          x,
+                          control.tr,
+                          treat.tr,
+                          pr.values=NULL) {
 
   res <- POST(url=paste0('https://pcats.research.cchmc.org/api/job/',jobid,'/staticgp.cate'),
                   encode='multipart',
