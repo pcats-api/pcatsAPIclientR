@@ -2,7 +2,7 @@
 % Please edit documentation in R/dynamicGP.cate.R
 \name{dynamicGP.cate}
 \alias{dynamicGP.cate}
-\title{Get conditional average treatment effect for heterogeneous computation data with two time points.}
+\title{Get conditional average treatment effect for data with two time points.}
 \usage{
 dynamicGP.cate(jobid, x, control.tr, treat.tr, pr.values = NULL)
 }
@@ -15,12 +15,10 @@ dynamicGP.cate(jobid, x, control.tr, treat.tr, pr.values = NULL)
 
 \item{treat.tr}{A vector of the values of the treatment variables at all stages compared to the reference group.}
 
-\item{pr.values}{pr.values}
+\item{pr.values}{An optional vector of user-defined values of c for PrCTE.}
 }
 \value{
-Return an object of class "cate.effect" which contains a list of the following components:
-  \item{out}{A data frame containing the posterior samples of the estimated conditional average treatment effect.}
-  \item{hte.est}{The statistical summary results of the conditional average treatment effect}
+jobid
 }
 \description{
 Estimate the conditional average treatment effect of user-specified treatment groups.

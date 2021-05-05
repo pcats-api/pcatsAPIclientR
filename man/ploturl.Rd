@@ -9,7 +9,7 @@ ploturl(jobid, plottype = "")
 \arguments{
 \item{jobid}{Job ID of the previously submitted job}
 
-\item{type}{Plot type}
+\item{plottype}{Plot type}
 }
 \value{
 url

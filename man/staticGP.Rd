@@ -2,34 +2,34 @@
 % Please edit documentation in R/staticGP.R
 \name{staticGP}
 \alias{staticGP}
-\title{Fit a linear model using Gaussian Process.}
+\title{Performs a data analysis for data with non-adaptive treatment(s).}
 \usage{
 staticGP(
   datafile = NULL,
   dataref = NULL,
+  method = "BART",
   outcome,
+  outcome.type = "Continuous",
+  outcome.bound_censor = "neither",
+  outcome.lb = NULL,
+  outcome.ub = NULL,
+  outcome.censor.yn = NULL,
+  outcome.censor.lv = NULL,
+  outcome.censor.uv = NULL,
+  outcome.link = "identity",
   treatment,
   x.explanatory = NULL,
   x.confounding = NULL,
-  tr.hte = NULL,
-  tr2.hte = NULL,
-  burn.num = 500,
-  mcmc.num = 500,
-  outcome.lb = NULL,
-  outcome.ub = NULL,
-  outcome.bound_censor = "neither",
-  outcome.type = "Continuous",
-  outcome.censor.lv = NULL,
-  outcome.censor.uv = NULL,
-  outcome.censor.yn = NULL,
-  outcome.link = "identity",
   tr.type = "Discrete",
   tr2.type = "Discrete",
   tr.values = NULL,
   tr2.values = NULL,
   pr.values = NULL,
+  tr.hte = NULL,
+  tr2.hte = NULL,
+  burn.num = 500,
+  mcmc.num = 500,
   x.categorical = NULL,
-  method = "BART",
   mi.datafile = NULL,
   mi.dataref = NULL,
   sheet = NULL,
@@ -41,69 +41,70 @@ staticGP(
 
 \item{dataref}{Reference to already uploaded file.}
 
+\item{method}{The method to be used. "GP" for GP method and "BART" for BART method. The default value is "BART".}
+
 \item{outcome}{The name of the outcome variable.}
 
-\item{treatment}{The vector of the name of the treatment variables.}
+\item{outcome.type}{Outcome type ("Continuous" or "Discrete"). The default value is "Continuous".}
+
+\item{outcome.bound_censor}{The default value is "neither". 
+"neither" if the outcome is not bounded or censored.
+"bounded" if the outcome is bounded.
+"censored" if the outcome is censored.}
+
+\item{outcome.lb}{Putting a lower bound if the outcome is bounded.}
+
+\item{outcome.ub}{Putting a upper bound if the outcome is bounded.}
+
+\item{outcome.censor.yn}{Censoring variable if outcome is censored.}
+
+\item{outcome.censor.lv}{lower variable of censored interval if outcome is censored.}
+
+\item{outcome.censor.uv}{upper variable of censored interval if outcome is censored.}
+
+\item{outcome.link}{function for outcome; the default value is "identity".
+"identity" if no transformation needed. 
+"log" for log transformation. 
+"logit" for logit transformation.}
+
+\item{treatment}{The vector of the name of the treatment variables. Users can input at most two treatment variables.}
 
 \item{x.explanatory}{The vector of the name of the explanatory variables.}
 
 \item{x.confounding}{The vector of the name of the confounding variables.}
 
-\item{tr.hte}{An optional vector specifying variables which may have heterogeneous treatment effect with the first treatment variable}
+\item{tr.type}{The type of the first treatment. "Continuous" for continuous treatment and "Discrete" for categorical treatment. The default value is "Discrete".}
 
-\item{tr2.hte}{An optional vector specifying variables which may have heterogeneous treatment effect with the second treatment variable}
-
-\item{burn.num}{numeric; the number of MCMC 'burn-in' samples, i.e. number of MCMC to be discarded.}
-
-\item{mcmc.num}{numeric; the number of MCMC samples after 'burn-in'.}
-
-\item{outcome.lb}{Lower bound if \code{outcome.censor} is TRUE.}
-
-\item{outcome.ub}{Upper bound if \code{outcome.censor} is TRUE.}
-
-\item{outcome.bound_censor}{logical; if TRUE, outcomes are bounded. If FALSE, outcomes are not bounded.}
-
-\item{outcome.type}{Outcome type ("Continuous" or "Discrete").}
-
-\item{outcome.censor.lv}{outcome.censor.lv}
-
-\item{outcome.censor.uv}{outcome.censor.uv}
-
-\item{outcome.censor.yn}{outcome.censor.yn}
-
-\item{outcome.link}{outcome.link}
-
-\item{tr.type}{tr.type}
-
-\item{tr2.type}{tr2.type}
+\item{tr2.type}{The type of the second treatment if available. "Continuous" for continuous treatment and "Discrete" for categorical treatment. The default value is "Discrete".}
 
 \item{tr.values}{user-defined values for the calculation of ATE if the first treatment variable is continuous}
 
 \item{tr2.values}{user-defined values for the calculation of ATE if the second treatment variable is continuous}
 
-\item{pr.values}{pr.values}
+\item{pr.values}{An optional vector of user-defined values of c for PrTE.}
 
-\item{x.categorical}{x.categorical}
+\item{tr.hte}{An optional vector specifying variables which may have heterogeneous treatment effect with the first treatment variable}
 
-\item{method}{method}
+\item{tr2.hte}{An optional vector specifying variables which may have heterogeneous treatment effect with the second treatment variable}
+
+\item{burn.num}{numeric; the number of MCMC 'burn-in' samples, i.e. number of MCMC to be discarded. The default value is 500.}
+
+\item{mcmc.num}{numeric; the number of MCMC samples after 'burn-in'. The default value is 500.}
+
+\item{x.categorical}{A vector of the name of categorical variables in data.}
 
 \item{mi.datafile}{File to upload (.csv or .xls) that contains the imputed data in the model.}
 
 \item{mi.dataref}{Reference to already uploaded file that contains the imputed data in the model.}
 
-\item{sheet}{If \code{dataurl} points to Excel file this variable specifies which sheet to load.}
+\item{sheet}{If \code{datafile} or \code{dataref} points to an Excel file this variable specifies which sheet to load.}
 
-\item{mi.sheet}{If \code{mi.dataurl} points to Excel file this variable specifies which sheet to load.}
-
-\item{outcome.censor}{logical; if TRUE, outcomes are bounded. If FALSE, outcomes are not bounded.}
-
-\item{categorical}{Ensure the specified fields are categorical}
+\item{mi.sheet}{If \code{mi.datafile} or \code{mi.dataurl} points to an Excel file this variable specifies which sheet to load.}
 }
 \value{
 jobid
 }
 \description{
-FIXME: GPMatch is used to fit a linear model within a Bayesian framework.
-  Gaussian process (GP) prior covariance function is utilized as a matching tool
-  which accomplishes matching and flexible outcome modeling in a single step.
+: Performs Bayesian's Gaussian process regression or Bayesian
+   additive regression tree for data with non-adaptive treatment(s).
 }

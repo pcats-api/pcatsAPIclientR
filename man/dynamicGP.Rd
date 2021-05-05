@@ -2,11 +2,12 @@
 % Please edit documentation in R/dynamicGP.R
 \name{dynamicGP}
 \alias{dynamicGP}
-\title{Fit a linear model with Gaussian Process at each stage for data with two time points.}
+\title{Performs a data analysis for data with adaptive treatments.}
 \usage{
 dynamicGP(
   datafile = NULL,
   dataref = NULL,
+  method = "BART",
   stg1.outcome,
   stg1.treatment,
   stg1.x.explanatory = NULL,
@@ -22,11 +23,13 @@ dynamicGP(
   stg1.outcome.censor.uv = NULL,
   stg1.outcome.censor.yn = NULL,
   stg1.outcome.link = "identity",
+  stg1.pr.values = NULL,
   stg2.outcome,
   stg2.treatment,
   stg2.x.explanatory = NULL,
   stg2.x.confounding = NULL,
-  stg2.tr.hte = NULL,
+  stg2.tr1.hte = NULL,
+  stg2.tr2.hte = NULL,
   stg2.tr.values = NULL,
   stg2.tr.type = "Discrete",
   stg2.outcome.type = "Continuous",
@@ -37,10 +40,10 @@ dynamicGP(
   stg2.outcome.censor.uv = NULL,
   stg2.outcome.censor.yn = NULL,
   stg2.outcome.link = "identity",
-  burn.num = 1000,
-  mcmc.num = 1000,
+  stg2.pr.values = NULL,
+  burn.num = 500,
+  mcmc.num = 500,
   x.categorical = NULL,
-  method = "BART",
   mi.datafile = NULL,
   mi.dataref = NULL,
   sheet = NULL,
@@ -52,11 +55,13 @@ dynamicGP(
 
 \item{dataref}{Reference to already uploaded file.}
 
-\item{stg1.outcome}{The name of the outcome variable for stage 1.}
+\item{method}{The method to be used. "GP" for GP method and "BART" for BART method. The default value is "BART".}
+
+\item{stg1.outcome}{The name of the intermediate outcome variable for stage 1.}
 
 \item{stg1.treatment}{The name of the treatment variable for stage 1.}
 
-\item{stg1.x.explanatory}{An optional vector of the names of the explanatory variables for stage 1.}
+\item{stg1.x.explanatory}{A vector of the name of the explanatory variables for stage 1.}
 
 \item{stg1.x.confounding}{A vector of the name of the confounding variables for stage 1.}
 
@@ -64,83 +69,90 @@ dynamicGP(
 
 \item{stg1.tr.values}{User-defined values for the calculation of ATE if the treatment variable is continuous for stage 1.}
 
-\item{stg1.tr.type}{stg1.tr.type}
+\item{stg1.tr.type}{The type of treatment at stage 1. "Continuous" for continuous treatment and "Discrete" for categorical treatment. The default value is "Discrete".}
 
-\item{stg1.outcome.type}{Outcome type ("Continuous" or "Discrete") for stage 1.}
+\item{stg1.outcome.type}{Intermediate outcome type ("Continuous" or "Discrete") for stage 1.}
 
-\item{stg1.outcome.bound_censor}{stg1.outcome.bound_censor}
+\item{stg1.outcome.bound_censor}{The default value is "neither". 
+"neither" if the intermediate outcome is not bounded or censored.
+"bounded" if the intermediate outcome is bounded.
+"censored" if the intermediate outcome is censored.}
 
-\item{stg1.outcome.lb}{Stage 1 lower bound if \code{stg1.outcome.censor} is TRUE.}
+\item{stg1.outcome.lb}{Stage 1 lower bound if the intermediate outcome is bounded.}
 
-\item{stg1.outcome.ub}{Stage 2 upper bound if \code{stg2.outcome.censor} is TRUE.}
+\item{stg1.outcome.ub}{Stage 1 upper bound if the intermediate outcome is bounded.}
 
-\item{stg1.outcome.censor.lv}{stg1.outcome.censor.lv}
+\item{stg1.outcome.censor.lv}{lower variable of censored interval if the intermediate outcome is censored.}
 
-\item{stg1.outcome.censor.uv}{stg1.outcome.censor.uv}
+\item{stg1.outcome.censor.uv}{upper variable of censored interval if the intermediate outcome is censored.}
 
-\item{stg1.outcome.censor.yn}{stg1.outcome.censor.yn}
+\item{stg1.outcome.censor.yn}{Censoring variable if the intermediate outcome is censored.}
 
-\item{stg1.outcome.link}{stg1.outcome.link}
+\item{stg1.outcome.link}{function for the intermediate outcome; the default value is ``identity''.
+"identity" if no transformation needed. 
+"log" for log transformation. 
+"logit" for logit transformation.}
+
+\item{stg1.pr.values}{An optional vector of user-defined values of c for PrTE at stage 1.}
 
 \item{stg2.outcome}{The name of the outcome variable for stage 2.}
 
 \item{stg2.treatment}{The name of the treatment variable for stage 2.}
 
-\item{stg2.x.explanatory}{An optional vector of the names of the explanatory variables for stage 2.}
+\item{stg2.x.explanatory}{A vector of the name of the explanatory variables for stage 2.}
 
 \item{stg2.x.confounding}{A vector of the name of the confounding variables for stage 2.}
 
-\item{stg2.tr.hte}{An optional vector specifying categorical variables which may have heterogeneous treatment effect with the treatment variable for stage 2.}
+\item{stg2.tr1.hte}{At stage 2, an optional vector specifying cate-gorical variables which may have heterogeneoustreatment effect with the stage 1 treatment variable}
+
+\item{stg2.tr2.hte}{At stage 2, an optional vector specifying cate-gorical variables which may have heterogeneoustreatment effect with the stage 2 treatment variable}
 
 \item{stg2.tr.values}{User-defined values for the calculation of ATE if the treatment variable is continuous for stage 2.}
 
-\item{stg2.tr.type}{stg2.tr.type}
+\item{stg2.tr.type}{The type of treatment at stage 2. "Continuous" for continuous treatment and "Discrete" for categorical treatment. The default value is "Discrete".}
 
 \item{stg2.outcome.type}{Outcome type ("Continuous" or "Discrete") for stage 2.}
 
-\item{stg2.outcome.bound_censor}{stg2.outcome.bound_censor}
+\item{stg2.outcome.bound_censor}{The default value is "neither". 
+"neither" if the intermediate outcome is not bounded or censored.
+"bounded" if the intermediate outcome is bounded.
+"censored" if the intermediate outcome is censored.}
 
-\item{stg2.outcome.lb}{Stage 2 lower bound if \code{stg2.outcome.censor} is TRUE.}
+\item{stg2.outcome.lb}{Stage 2 lower bound if the outcome is bounded.}
 
-\item{stg2.outcome.ub}{Stage 2 upper bound if \code{stg2.outcome.censor} is TRUE.}
+\item{stg2.outcome.ub}{Stage 2 upper bound if the outcome is bounded.}
 
-\item{stg2.outcome.censor.lv}{stg2.outcome.censor.lv}
+\item{stg2.outcome.censor.lv}{lower variable of censored interval if the outcome is censored.}
 
-\item{stg2.outcome.censor.uv}{stg2.outcome.censor.uv}
+\item{stg2.outcome.censor.uv}{upper variable of censored interval if the outcome is censored.}
 
-\item{stg2.outcome.censor.yn}{stg2.outcome.censor.yn}
+\item{stg2.outcome.censor.yn}{Censoring variable if the outcome is censored.}
 
-\item{stg2.outcome.link}{stg2.outcome.link}
+\item{stg2.outcome.link}{function for the outcome; the default value is ``identity''.
+"identity" if no transformation needed. 
+"log" for log transformation. 
+"logit" for logit transformation.}
 
-\item{burn.num}{numeric; the number of MCMC 'burn-in' samples, i.e. number of MCMC to be discarded.}
+\item{stg2.pr.values}{An optional vector of user-defined values of c for PrTE at stage 2.}
 
-\item{mcmc.num}{numeric; the number of MCMC samples after 'burn-in'.}
+\item{burn.num}{numeric; the number of MCMC 'burn-in' samples, i.e. number of MCMC to be discarded. The default value is 500.}
 
-\item{x.categorical}{x.categorical}
+\item{mcmc.num}{numeric; the number of MCMC samples after 'burn-in'. The default value is 500.}
 
-\item{method}{method}
+\item{x.categorical}{A vector of the name of categorical variables in data.}
 
 \item{mi.datafile}{File to upload (.csv or .xls) that contains the imputed data in the model.}
 
 \item{mi.dataref}{Reference to already uploaded file that contains the imputed data in the model.}
 
-\item{sheet}{If \code{dataurl} points to Excel file this variable specifies which sheet to load.}
+\item{sheet}{If \code{datafile} or \code{dataref} points to an Excel file this variable specifies which sheet to load.}
 
-\item{mi.sheet}{If \code{mi.dataurl} points to Excel file this variable specifies which sheet to load.}
-
-\item{stg1.outcome.censor}{logical; if TRUE, stage 1 outcomes are bounded. If FALSE, outcomes are not bounded.}
-
-\item{stg2.outcome.censor}{logical; if TRUE, stage 2 outcomes are bounded. If FALSE, outcomes are not bounded.}
-
-\item{categorical}{A vector of the name of the categorical variables.}
+\item{mi.sheet}{If \code{mi.datafile} or \code{mi.dataurl} points to an Excel file this variable specifies which sheet to load.}
 }
 \value{
 jobid
 }
 \description{
-FIXME: GPMatch is used to fit a linear model within a Bayesian framework.
-  Gaussian process (GP) prior covariance function is utilized as a matching tool
-  which accomplishes matching and flexible outcome modeling in a single step.
-
-Return the GP dynamic results.
+: Performs Bayesian's Gaussian process regression or Bayesian
+   additive regression tree for data with adaptive treatment(s).
 }
