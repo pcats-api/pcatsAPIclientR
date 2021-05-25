@@ -6,7 +6,7 @@
 #' @param method The method to be used. "GP" for GP method and "BART" for BART method. The default value is "BART".
 #' @param outcome The name of the outcome variable.
 #' @param outcome.type Outcome type ("Continuous" or "Discrete"). The default value is "Continuous".
-#' @param outcome.bound_censor The default value is "neither". 
+#' @param outcome.bound_censor The default value is "neither".
 #'    "neither" if the outcome is not bounded or censored.
 #'    "bounded" if the outcome is bounded.
 #'    "censored" if the outcome is censored.
@@ -16,14 +16,14 @@
 #' @param outcome.censor.lv lower variable of censored interval if outcome is censored.
 #' @param outcome.censor.uv upper variable of censored interval if outcome is censored.
 #' @param outcome.link function for outcome; the default value is "identity".
-#'    "identity" if no transformation needed. 
-#'    "log" for log transformation. 
+#'    "identity" if no transformation needed.
+#'    "log" for log transformation.
 #'    "logit" for logit transformation.
 #' @param treatment The vector of the name of the treatment variables. Users can input at most two treatment variables.
 #' @param x.explanatory The vector of the name of the explanatory variables.
 #' @param x.confounding The vector of the name of the confounding variables.
-#' @param tr.type The type of the first treatment. "Continuous" for continuous treatment and "Discrete" for categorical treatment. The default value is "Discrete". 
-#' @param tr2.type The type of the second treatment if available. "Continuous" for continuous treatment and "Discrete" for categorical treatment. The default value is "Discrete". 
+#' @param tr.type The type of the first treatment. "Continuous" for continuous treatment and "Discrete" for categorical treatment. The default value is "Discrete".
+#' @param tr2.type The type of the second treatment if available. "Continuous" for continuous treatment and "Discrete" for categorical treatment. The default value is "Discrete".
 #' @param tr.values user-defined values for the calculation of ATE if the first treatment variable is continuous
 #' @param tr2.values user-defined values for the calculation of ATE if the second treatment variable is continuous
 #' @param pr.values An optional vector of user-defined values of c for PrTE.
@@ -42,17 +42,17 @@
 #' @import utils
 staticGP <- function(
                      datafile=NULL,
-                     dataref=NULL,  
+                     dataref=NULL,
                      method="BART",
-                     outcome, 
-                     outcome.type="Continuous",  
+                     outcome,
+                     outcome.type="Continuous",
                      outcome.bound_censor="neither",
                      outcome.lb=NULL,
-                     outcome.ub=NULL,  
+                     outcome.ub=NULL,
                      outcome.censor.yn=NULL,
                      outcome.censor.lv=NULL,
                      outcome.censor.uv=NULL,
-                     outcome.link="identity",  
+                     outcome.link="identity",
                      treatment,
                      x.explanatory=NULL,
                      x.confounding=NULL,
@@ -69,7 +69,10 @@ staticGP <- function(
                      mi.datafile=NULL,
                      mi.dataref=NULL,
                      sheet=NULL,
-                     mi.sheet=NULL) {
+                     mi.sheet=NULL,
+                     seed=5000,
+                     token=NULL,
+                     use.cache=F) {
 
   data<-NULL
   if (!is.null(datafile)) {
@@ -79,7 +82,14 @@ staticGP <- function(
   if (!is.null(mi.datafile)) {
     mi.data <- httr::upload_file(mi.datafile)
   }
+
+  headers <- c()
+  if (!is.null(token)) { headers<-c(headers, "Authorization"=paste("Bearer",token)) }
+  if (!hasArg(use.cache) && Sys.getenv("PCATS_USE_CACHE")!="") use.cache<-Sys.getenv("PCATS_USE_CACHE")
+  if (!is.null(use.cache) && (use.cache==T || use.cache=="1")) { headers<-c(headers, "X-API-Cache"="1") }
+
   res <- POST(url='https://pcats.research.cchmc.org/api/staticgp',
+              add_headers(headers),
               encode='multipart',
               body=list(data=data,
                         dataref=dataref,
@@ -108,7 +118,8 @@ staticGP <- function(
                         mi.data=mi.data,
                         mi.dataref=mi.dataref,
                         sheet=sheet,
-                        mi.sheet=mi.sheet))
+                        mi.sheet=mi.sheet,
+                        seed=seed))
 
   cont <- content(res)
   jobid <- cont$jobid[[1]]

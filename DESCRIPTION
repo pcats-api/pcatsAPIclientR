@@ -1,7 +1,7 @@
 Package: pcatsAPIclientR
 Type: Package
 Title: PCATS Client API Wrapper
-Version: 0.1.6
+Version: 0.1.7
 Author: Who wrote it
 Maintainer: Michal Kouril <michal.kouril@cchmc.org>
 Description: This package wraps the PCATS REST API into an easier-to-use

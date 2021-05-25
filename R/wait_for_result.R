@@ -6,11 +6,11 @@
 #' @import httr
 #' @import utils
 #'
-wait_for_result <- function(jobid) {
+wait_for_result <- function(jobid, token=NULL) {
   status<-NULL
   while (TRUE)
   {
-    status <- job_status(jobid)
+    status <- job_status(jobid, token)
 
     if (status!="Pending") {
       break;

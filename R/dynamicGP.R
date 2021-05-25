@@ -11,7 +11,7 @@
 #' @param stg1.x.explanatory A vector of the name of the explanatory variables for stage 1.
 #' @param stg1.x.confounding A vector of the name of the confounding variables for stage 1.
 #' @param stg1.tr.hte An optional vector specifying categorical variables which may have heterogeneous treatment effect with the treatment variable for stage 1.
-#' @param stg1.outcome.bound_censor The default value is "neither". 
+#' @param stg1.outcome.bound_censor The default value is "neither".
 #'    "neither" if the intermediate outcome is not bounded or censored.
 #'    "bounded" if the intermediate outcome is bounded.
 #'    "censored" if the intermediate outcome is censored.
@@ -22,8 +22,8 @@
 #' @param stg1.outcome.censor.lv lower variable of censored interval if the intermediate outcome is censored.
 #' @param stg1.outcome.censor.uv upper variable of censored interval if the intermediate outcome is censored.
 #' @param stg1.outcome.link function for the intermediate outcome; the default value is ``identity''.
-#'    "identity" if no transformation needed. 
-#'    "log" for log transformation. 
+#'    "identity" if no transformation needed.
+#'    "log" for log transformation.
 #'    "logit" for logit transformation.
 #' @param stg1.tr.values User-defined values for the calculation of ATE if the treatment variable is continuous for stage 1.
 #' @param stg1.tr.type The type of treatment at stage 1. "Continuous" for continuous treatment and "Discrete" for categorical treatment. The default value is "Discrete".
@@ -34,7 +34,7 @@
 #' @param stg2.x.confounding A vector of the name of the confounding variables for stage 2.
 #' @param stg2.tr1.hte At stage 2, an optional vector specifying cate-gorical variables which may have heterogeneoustreatment effect with the stage 1 treatment variable
 #' @param stg2.tr2.hte At stage 2, an optional vector specifying cate-gorical variables which may have heterogeneoustreatment effect with the stage 2 treatment variable
-#' @param stg2.outcome.bound_censor The default value is "neither". 
+#' @param stg2.outcome.bound_censor The default value is "neither".
 #'    "neither" if the intermediate outcome is not bounded or censored.
 #'    "bounded" if the intermediate outcome is bounded.
 #'    "censored" if the intermediate outcome is censored.
@@ -45,8 +45,8 @@
 #' @param stg2.outcome.censor.lv lower variable of censored interval if the outcome is censored.
 #' @param stg2.outcome.censor.uv upper variable of censored interval if the outcome is censored.
 #' @param stg2.outcome.link function for the outcome; the default value is ``identity''.
-#'    "identity" if no transformation needed. 
-#'    "log" for log transformation. 
+#'    "identity" if no transformation needed.
+#'    "log" for log transformation.
 #'    "logit" for logit transformation.
 #' @param stg2.tr.values User-defined values for the calculation of ATE if the treatment variable is continuous for stage 2.
 #' @param stg2.tr.type The type of treatment at stage 2. "Continuous" for continuous treatment and "Discrete" for categorical treatment. The default value is "Discrete".
@@ -67,7 +67,7 @@ dynamicGP <- function(
                      datafile=NULL,
                      dataref=NULL,
                      method="BART",
-  
+
                      # stage 1
                      stg1.outcome,
                      stg1.treatment,
@@ -112,17 +112,27 @@ dynamicGP <- function(
                      mi.datafile=NULL,
                      mi.dataref=NULL,
                      sheet=NULL,
-                     mi.sheet=NULL) {
+                     mi.sheet=NULL,
+                     seed=5000,
+                     token=NULL,
+                     use.cache=F) {
 
   data<-NULL
   if (!is.null(datafile)) {
-    data <- upload_file(datafile)
+    data <- httr::upload_file(datafile)
   }
   mi.data<-NULL
   if (!is.null(mi.datafile)) {
-    mi.data <- upload_file(mi.datafile)
+    mi.data <- httr::upload_file(mi.datafile)
   }
-  res <- POST(url='https://pcats.research.cchmc.org/api/dynamicgp',
+
+  headers <- c()
+  if (!is.null(token)) { headers<-c(headers, "Authorization"=paste("Bearer",token)) }
+  if (!hasArg(use.cache) && Sys.getenv("PCATS_USE_CACHE")!="") use.cache<-Sys.getenv("PCATS_USE_CACHE")
+  if (!is.null(use.cache) && (use.cache==T || use.cache=="1")) { headers<-c(headers, "X-API-Cache"="1") }
+
+   res <- POST(url='https://pcats.research.cchmc.org/api/dynamicgp',
+              add_headers(headers),
               encode='multipart',
               body=list(data=data,
                         dataref=dataref,
@@ -159,8 +169,8 @@ dynamicGP <- function(
                         mi.data=mi.data,
                         mi.dataref=mi.dataref,
                         sheet=sheet,
-                        mi.sheet=mi.sheet),
-              )
+                        mi.sheet=mi.sheet,
+                        seed=seed))
 
   cont <- content(res)
   jobid <- cont$jobid[[1]]
