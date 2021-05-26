@@ -18,12 +18,14 @@ staticGP.cate <- function(
                           treat.tr,
                           pr.values=NULL,
                           token=NULL,
-                          use.cache=F) {
+                          use.cache=F,
+                          reuse.cached.jobid=F) {
 
   headers <- c()
   if (!is.null(token)) { headers<-c(headers, "Authorization"=paste("Bearer",token)) }
   if (!hasArg(use.cache) && Sys.getenv("PCATS_USE_CACHE")!="") use.cache<-Sys.getenv("PCATS_USE_CACHE")
   if (!is.null(use.cache) && (use.cache==T || use.cache=="1")) { headers<-c(headers, "X-API-Cache"="1") }
+  if (!is.null(reuse.cached.jobid) && (reuse.cached.jobid==T || reuse.cached.jobid=="1")) { headers<-c(headers, "X-API-Reuse-Cached-Jobid"="1") }
 
   res <- POST(url=paste0('https://pcats.research.cchmc.org/api/job/',jobid,'/staticgp.cate'),
                   add_headers(headers),
