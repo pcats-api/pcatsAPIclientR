@@ -11,7 +11,7 @@ staticGP.cate(
   treat.tr,
   pr.values = NULL,
   token = NULL,
-  use.cache = F
+  use.cache = NULL
 )
 }
 \arguments{
