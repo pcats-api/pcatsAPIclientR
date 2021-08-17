@@ -31,8 +31,7 @@ dynamicGP.cate <- function(
     res <- POST(url=paste0('https://pcats.research.cchmc.org/api/job/',jobid,'/dynamicgp.cate'),
                 add_headers(headers),
                 encode='multipart',
-                body=list(jobid=jobid,
-                          x=x,
+                body=list(x=x,
                           control.tr=control.tr,
                           treat.tr=treat.tr,
                           pr.values=pr.values
