@@ -21,7 +21,7 @@ staticGP.cate <- function(
                           treat.tr,
                           pr.values=NULL,
                           token=NULL,
-                          use.cache=F) {
+                          use.cache=NULL) {
 
   headers <- c()
   if (!is.null(token)) { headers<-c(headers, "Authorization"=paste("Bearer",token)) }
