@@ -4,10 +4,12 @@
 \alias{wait_for_result}
 \title{Wait while the job status is pending}
 \usage{
-wait_for_result(jobid)
+wait_for_result(jobid, token = NULL)
 }
 \arguments{
 \item{jobid}{Job ID of the previously submitted job}
+
+\item{token}{Authentication token.}
 }
 \value{
 status

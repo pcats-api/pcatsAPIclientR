@@ -1,6 +1,7 @@
 #' @title Wait while the job status is pending
 #' @description Return when the job status is finished (either successfully or otherwise)
 #' @param jobid Job ID of the previously submitted job
+#' @param token Authentication token.
 #' @return status
 #' @export
 #' @import httr

@@ -4,10 +4,12 @@
 \alias{job_status}
 \title{Return job status}
 \usage{
-job_status(jobid)
+job_status(jobid, token = NULL)
 }
 \arguments{
 \item{jobid}{Job ID of the previously submitted job}
+
+\item{token}{Authentication token.}
 }
 \value{
 status

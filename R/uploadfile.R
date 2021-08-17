@@ -1,6 +1,7 @@
 #' @title Upload a file
 #' @description Upload a file
 #' @param filename Filename of a file to upload
+#' @param token Authentication token.
 #' @return Backend filename reference
 #' @export
 #' @import httr

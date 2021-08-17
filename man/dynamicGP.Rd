@@ -47,7 +47,10 @@ dynamicGP(
   mi.datafile = NULL,
   mi.dataref = NULL,
   sheet = NULL,
-  mi.sheet = NULL
+  mi.sheet = NULL,
+  seed = 5000,
+  token = NULL,
+  use.cache = NULL
 )
 }
 \arguments{
@@ -73,7 +76,7 @@ dynamicGP(
 
 \item{stg1.outcome.type}{Intermediate outcome type ("Continuous" or "Discrete") for stage 1.}
 
-\item{stg1.outcome.bound_censor}{The default value is "neither". 
+\item{stg1.outcome.bound_censor}{The default value is "neither".
 "neither" if the intermediate outcome is not bounded or censored.
 "bounded" if the intermediate outcome is bounded.
 "censored" if the intermediate outcome is censored.}
@@ -89,8 +92,8 @@ dynamicGP(
 \item{stg1.outcome.censor.yn}{Censoring variable if the intermediate outcome is censored.}
 
 \item{stg1.outcome.link}{function for the intermediate outcome; the default value is ``identity''.
-"identity" if no transformation needed. 
-"log" for log transformation. 
+"identity" if no transformation needed.
+"log" for log transformation.
 "logit" for logit transformation.}
 
 \item{stg1.pr.values}{An optional vector of user-defined values of c for PrTE at stage 1.}
@@ -113,7 +116,7 @@ dynamicGP(
 
 \item{stg2.outcome.type}{Outcome type ("Continuous" or "Discrete") for stage 2.}
 
-\item{stg2.outcome.bound_censor}{The default value is "neither". 
+\item{stg2.outcome.bound_censor}{The default value is "neither".
 "neither" if the intermediate outcome is not bounded or censored.
 "bounded" if the intermediate outcome is bounded.
 "censored" if the intermediate outcome is censored.}
@@ -129,8 +132,8 @@ dynamicGP(
 \item{stg2.outcome.censor.yn}{Censoring variable if the outcome is censored.}
 
 \item{stg2.outcome.link}{function for the outcome; the default value is ``identity''.
-"identity" if no transformation needed. 
-"log" for log transformation. 
+"identity" if no transformation needed.
+"log" for log transformation.
 "logit" for logit transformation.}
 
 \item{stg2.pr.values}{An optional vector of user-defined values of c for PrTE at stage 2.}
@@ -148,6 +151,12 @@ dynamicGP(
 \item{sheet}{If \code{datafile} or \code{dataref} points to an Excel file this variable specifies which sheet to load.}
 
 \item{mi.sheet}{If \code{mi.datafile} or \code{mi.dataurl} points to an Excel file this variable specifies which sheet to load.}
+
+\item{seed}{Sets the seed. The default value is 5000.}
+
+\item{token}{Authentication token.}
+
+\item{use.cache}{Use cached results (default True).}
 }
 \value{
 jobid

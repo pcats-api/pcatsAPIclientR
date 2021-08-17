@@ -33,7 +33,10 @@ staticGP(
   mi.datafile = NULL,
   mi.dataref = NULL,
   sheet = NULL,
-  mi.sheet = NULL
+  mi.sheet = NULL,
+  seed = 5000,
+  token = NULL,
+  use.cache = NULL
 )
 }
 \arguments{
@@ -47,7 +50,7 @@ staticGP(
 
 \item{outcome.type}{Outcome type ("Continuous" or "Discrete"). The default value is "Continuous".}
 
-\item{outcome.bound_censor}{The default value is "neither". 
+\item{outcome.bound_censor}{The default value is "neither".
 "neither" if the outcome is not bounded or censored.
 "bounded" if the outcome is bounded.
 "censored" if the outcome is censored.}
@@ -63,8 +66,8 @@ staticGP(
 \item{outcome.censor.uv}{upper variable of censored interval if outcome is censored.}
 
 \item{outcome.link}{function for outcome; the default value is "identity".
-"identity" if no transformation needed. 
-"log" for log transformation. 
+"identity" if no transformation needed.
+"log" for log transformation.
 "logit" for logit transformation.}
 
 \item{treatment}{The vector of the name of the treatment variables. Users can input at most two treatment variables.}
@@ -100,6 +103,12 @@ staticGP(
 \item{sheet}{If \code{datafile} or \code{dataref} points to an Excel file this variable specifies which sheet to load.}
 
 \item{mi.sheet}{If \code{mi.datafile} or \code{mi.dataurl} points to an Excel file this variable specifies which sheet to load.}
+
+\item{seed}{Sets the seed. The default value is 5000.}
+
+\item{token}{Authentication token.}
+
+\item{use.cache}{Use cached results (default True).}
 }
 \value{
 jobid

@@ -4,12 +4,14 @@
 \alias{ploturl}
 \title{Return plot URL}
 \usage{
-ploturl(jobid, plottype = "")
+ploturl(jobid, plottype = "", token = NULL)
 }
 \arguments{
 \item{jobid}{Job ID of the previously submitted job}
 
 \item{plottype}{Plot type}
+
+\item{token}{Authentication token.}
 }
 \value{
 url

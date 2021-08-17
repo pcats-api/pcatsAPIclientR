@@ -4,10 +4,12 @@
 \alias{results}
 \title{Return job results}
 \usage{
-results(jobid)
+results(jobid, token = NULL)
 }
 \arguments{
 \item{jobid}{Job ID of the previously submitted job}
+
+\item{token}{Authentication token.}
 }
 \value{
 results

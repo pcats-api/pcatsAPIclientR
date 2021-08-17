@@ -3,6 +3,7 @@
 #' @description Return plot URL
 #' @param jobid Job ID of the previously submitted job
 #' @param plottype Plot type
+#' @param token Authentication token.
 #' @return url
 #' @export
 #' @import httr

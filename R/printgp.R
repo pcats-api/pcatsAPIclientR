@@ -2,12 +2,13 @@
 #' @title Print job results
 #' @description Return formatted string with job results
 #' @param jobid Job ID of the previously submitted job
+#' @param token Authentication token.
 #' @return formatted text
 #' @export
 #' @import httr
 #' @import utils
 #'
-print <- function(jobid, token=NULL) {
+printgp <- function(jobid, token=NULL) {
 
   headers <- c()
   if (!is.null(token)) { headers<-c(headers, "Authorization"=paste("Bearer",token)) }

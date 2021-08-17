@@ -58,10 +58,14 @@
 #' @param mi.dataref Reference to already uploaded file that contains the imputed data in the model.
 #' @param sheet If \code{datafile} or \code{dataref} points to an Excel file this variable specifies which sheet to load.
 #' @param mi.sheet If \code{mi.datafile} or \code{mi.dataurl} points to an Excel file this variable specifies which sheet to load.
+#' @param seed Sets the seed. The default value is 5000.
+#' @param token Authentication token.
+#' @param use.cache Use cached results (default True).
 #' @return jobid
 #' @export
 #' @import httr
 #' @import utils
+#' @importFrom methods hasArg
 #'
 dynamicGP <- function(
                      datafile=NULL,
@@ -115,8 +119,7 @@ dynamicGP <- function(
                      mi.sheet=NULL,
                      seed=5000,
                      token=NULL,
-                     use.cache=F,
-                     reuse.cached.jobid=F) {
+                     use.cache=NULL) {
 
   data<-NULL
   if (!is.null(datafile)) {
@@ -131,7 +134,7 @@ dynamicGP <- function(
   if (!is.null(token)) { headers<-c(headers, "Authorization"=paste("Bearer",token)) }
   if (!hasArg(use.cache) && Sys.getenv("PCATS_USE_CACHE")!="") use.cache<-Sys.getenv("PCATS_USE_CACHE")
   if (!is.null(use.cache) && (use.cache==T || use.cache=="1")) { headers<-c(headers, "X-API-Cache"="1") }
-  if (!is.null(reuse.cached.jobid) && (reuse.cached.jobid==T || reuse.cached.jobid=="1")) { headers<-c(headers, "X-API-Reuse-Cached-Jobid"="1") }
+  if (!is.null(use.cache) && (use.cache==F || use.cache=="0")) { headers<-c(headers, "X-API-Cache"="0") }
 
    res <- POST(url='https://pcats.research.cchmc.org/api/dynamicgp',
               add_headers(headers),

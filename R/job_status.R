@@ -2,6 +2,7 @@
 #' @title Return job status
 #' @description Return status of the previously submitted job
 #' @param jobid Job ID of the previously submitted job
+#' @param token Authentication token.
 #' @return status
 #' @export
 #' @import httr

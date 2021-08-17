@@ -4,10 +4,12 @@
 \alias{uploadfile}
 \title{Upload a file}
 \usage{
-uploadfile(filename)
+uploadfile(filename, token = NULL)
 }
 \arguments{
 \item{filename}{Filename of a file to upload}
+
+\item{token}{Authentication token.}
 }
 \value{
 Backend filename reference

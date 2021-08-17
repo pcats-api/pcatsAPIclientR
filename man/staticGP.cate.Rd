@@ -4,7 +4,15 @@
 \alias{staticGP.cate}
 \title{Get conditional average treatment effect}
 \usage{
-staticGP.cate(jobid, x, control.tr, treat.tr, pr.values = NULL)
+staticGP.cate(
+  jobid,
+  x,
+  control.tr,
+  treat.tr,
+  pr.values = NULL,
+  token = NULL,
+  use.cache = F
+)
 }
 \arguments{
 \item{jobid}{job id of the "staticGP".}
@@ -16,6 +24,10 @@ staticGP.cate(jobid, x, control.tr, treat.tr, pr.values = NULL)
 \item{treat.tr}{The value of the treatment variable compared to the reference group.}
 
 \item{pr.values}{An optional vector of user-defined values of c for PrCTE.}
+
+\item{token}{Authentication token.}
+
+\item{use.cache}{Use cached results (default True).}
 }
 \value{
 Return jobid
