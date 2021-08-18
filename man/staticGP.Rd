@@ -114,6 +114,6 @@ staticGP(
 jobid
 }
 \description{
-: Performs Bayesian's Gaussian process regression or Bayesian
+Performs Bayesian's Gaussian process regression or Bayesian
    additive regression tree for data with non-adaptive treatment(s).
 }

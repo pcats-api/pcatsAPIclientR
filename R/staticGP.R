@@ -1,5 +1,5 @@
 #' @title Performs a data analysis for data with non-adaptive treatment(s).
-#' @description: Performs Bayesian's Gaussian process regression or Bayesian
+#' @description Performs Bayesian's Gaussian process regression or Bayesian
 #'    additive regression tree for data with non-adaptive treatment(s).
 #' @param datafile File to upload (.csv or .xls)
 #' @param dataref Reference to already uploaded file.
