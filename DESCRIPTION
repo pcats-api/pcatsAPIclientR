@@ -6,8 +6,7 @@ Author: Bin Huang [aut],
     Chen Chen [aut], 
     Michal Kouril [aut, cre]
 Maintainer: Michal Kouril <michal.kouril@cchmc.org>
-Description: This package wraps the PCATS REST API into an easier-to-use
-    functions.
+Description: Provides an R interface to the PCATS REST API.
 License: GNU General Public License
 Encoding: UTF-8
 LazyData: true
@@ -15,4 +14,5 @@ RoxygenNote: 7.1.1
 Imports:
     httr,
     jsonlite,
-    methods
+    methods,
+    testthat
