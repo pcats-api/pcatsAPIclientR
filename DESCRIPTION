@@ -1,18 +1,17 @@
 Package: pcatsAPIclientR
 Type: Package
-Title: PCATS API Client
+Title: 'PCATS' API Client
 Version: 1.0.0
 Author: Bin Huang [aut], 
     Chen Chen [aut], 
     Michal Kouril [aut, cre]
 Maintainer: Michal Kouril <michal.kouril@cchmc.org>
-Description: Provides an R interface to the PCATS REST API.
+Description: Provides an R interface to the 'PCATS' API
+    <https://pcats.research.cchmc.org/api/__docs__/>,
+    allowing R users to submit tasks and retrieve results.
 License: GNU General Public License
 Encoding: UTF-8
-LazyData: true
 RoxygenNote: 7.1.1
-Imports:
-    httr,
-    jsonlite,
-    methods,
-    testthat
+Imports: httr, jsonlite, methods, testthat
+NeedsCompilation: no
+Packaged: 2021-08-25 03:02:05 UTC; michal
