@@ -28,7 +28,7 @@ dynamicGP2.cate <- function(
     if (!is.null(use.cache) && (use.cache==T || use.cache=="1")) { headers<-c(headers, "X-API-Cache"="1") }
     if (!is.null(use.cache) && (use.cache==F || use.cache=="0")) { headers<-c(headers, "X-API-Cache"="0") }
 
-    res <- POST(url=paste0('https://pcats.research.cchmc.org/api/job/',jobid,'/dynamicgp.cate'),
+    res <- POST(url=paste0('https://pcats.research.cchmc.org/api/job/',jobid,'/dynamicgp2.cate'),
                 add_headers(headers),
                 encode='multipart',
                 body=list(x=x,
