@@ -1,7 +1,7 @@
 Package: pcatsAPIclientR
 Type: Package
 Title: 'PCATS' API Client
-Version: 2.0.0
+Version: 2.0.1
 Author: Bin Huang [aut], 
     Chen Chen [aut], 
     Michal Kouril [aut, cre]
