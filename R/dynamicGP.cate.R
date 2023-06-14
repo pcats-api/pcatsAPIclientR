@@ -6,7 +6,7 @@
 #' @param x The name of variable which may have the heterogeneous treatment effect. x should be a categorical variable.
 #' @param control.tr A vector of the values of the treatment variables at all stages as the reference group.
 #' @param treat.tr A vector of the values of the treatment variables at all stages compared to the reference group.
-#' @param pr.values An optional vector of user-defined values of c for PrCTE.
+#' @param c.margin An optional vector of user-defined values of c for PrCTE.
 #' @param token Authentication token.
 #' @param use.cache Use cached results (default True).
 #' @return jobid
@@ -18,7 +18,7 @@ dynamicGP.cate <- function(
                            x,
                            control.tr,
                            treat.tr,
-                           pr.values=NULL,
+                           c.margin=NULL,
                            token=NULL,
                            use.cache=NULL) {
 
@@ -34,7 +34,7 @@ dynamicGP.cate <- function(
                 body=list(x=x,
                           control.tr=control.tr,
                           treat.tr=treat.tr,
-                          pr.values=pr.values
+                          c.margin=c.margin
                 ))
     cont <- content(res)
     jobid <- cont$jobid[[1]]

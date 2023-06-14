@@ -23,12 +23,9 @@
 #' @param x.explanatory The vector of the name of the explanatory variables.
 #' @param x.confounding The vector of the name of the confounding variables.
 #' @param tr.type The type of the first treatment. "Continuous" for continuous treatment and "Discrete" for categorical treatment. The default value is "Discrete".
-#' @param tr2.type The type of the second treatment if available. "Continuous" for continuous treatment and "Discrete" for categorical treatment. The default value is "Discrete".
 #' @param tr.values user-defined values for the calculation of ATE if the first treatment variable is continuous
-#' @param tr2.values user-defined values for the calculation of ATE if the second treatment variable is continuous
-#' @param pr.values An optional vector of user-defined values of c for PrTE.
+#' @param c.margin An optional vector of user-defined values of c for PrTE.
 #' @param tr.hte An optional vector specifying variables which may have heterogeneous treatment effect with the first treatment variable
-#' @param tr2.hte An optional vector specifying variables which may have heterogeneous treatment effect with the second treatment variable
 #' @param burn.num numeric; the number of MCMC 'burn-in' samples, i.e. number of MCMC to be discarded. The default value is 500.
 #' @param mcmc.num numeric; the number of MCMC samples after 'burn-in'. The default value is 500.
 #' @param x.categorical A vector of the name of categorical variables in data.
@@ -61,12 +58,11 @@ staticGP <- function(
                      x.explanatory=NULL,
                      x.confounding=NULL,
                      tr.type="Discrete",
-                     tr2.type="Discrete",
                      tr.values=NULL,
-                     tr2.values=NULL,
-                     pr.values=NULL,
+                     c.margin=NULL,
                      tr.hte=NULL,
-                     tr2.hte=NULL,
+		     time,
+		     time.value=NULL,
                      burn.num=500,
                      mcmc.num=500,
                      x.categorical=NULL,
@@ -103,7 +99,8 @@ staticGP <- function(
                         x.explanatory=x.explanatory,
                         x.confounding=x.confounding,
                         tr.hte=tr.hte,
-                        tr2.hte=tr2.hte,
+		        time=time,
+			time.value=time.value,
                         burn.num=burn.num, mcmc.num=mcmc.num,
                         outcome.lb=outcome.lb,
                         outcome.ub=outcome.ub,
@@ -114,10 +111,8 @@ staticGP <- function(
                         outcome.censor.yn=outcome.censor.yn,
                         outcome.link=outcome.link,
                         tr.type=tr.type,
-                        tr2.type=tr2.type,
                         tr.values=tr.values,
-                        tr2.values=tr2.values,
-                        pr.values=pr.values,
+                        c.margin=c.margin,
                         x.categorical=x.categorical,
                         method=method,
                         mi.data=mi.data,

@@ -27,7 +27,7 @@
 #'    "logit" for logit transformation.
 #' @param stg1.tr.values User-defined values for the calculation of ATE if the treatment variable is continuous for stage 1.
 #' @param stg1.tr.type The type of treatment at stage 1. "Continuous" for continuous treatment and "Discrete" for categorical treatment. The default value is "Discrete".
-#' @param stg1.pr.values An optional vector of user-defined values of c for PrTE at stage 1.
+#' @param stg1.c.margin An optional vector of user-defined values of c for PrTE at stage 1.
 #' @param stg2.outcome The name of the outcome variable for stage 2.
 #' @param stg2.treatment The name of the treatment variable for stage 2.
 #' @param stg2.x.explanatory A vector of the name of the explanatory variables for stage 2.
@@ -50,7 +50,7 @@
 #'    "logit" for logit transformation.
 #' @param stg2.tr.values User-defined values for the calculation of ATE if the treatment variable is continuous for stage 2.
 #' @param stg2.tr.type The type of treatment at stage 2. "Continuous" for continuous treatment and "Discrete" for categorical treatment. The default value is "Discrete".
-#' @param stg2.pr.values An optional vector of user-defined values of c for PrTE at stage 2.
+#' @param stg2.c.margin An optional vector of user-defined values of c for PrTE at stage 2.
 #' @param burn.num numeric; the number of MCMC 'burn-in' samples, i.e. number of MCMC to be discarded. The default value is 500.
 #' @param mcmc.num numeric; the number of MCMC samples after 'burn-in'. The default value is 500.
 #' @param x.categorical A vector of the name of categorical variables in data.
@@ -80,6 +80,8 @@ dynamicGP <- function(
                      stg1.tr.hte=NULL,
                      stg1.tr.values=NULL,
                      stg1.tr.type="Discrete",
+		     stg1.time,
+		     stg1.time.value=NULL,
                      stg1.outcome.type="Continuous",
                      stg1.outcome.bound_censor="neither",
                      stg1.outcome.lb=NULL,
@@ -88,7 +90,7 @@ dynamicGP <- function(
                      stg1.outcome.censor.uv=NULL,
                      stg1.outcome.censor.yn=NULL,
                      stg1.outcome.link="identity",
-                     stg1.pr.values=NULL,
+                     stg1.c.margin=NULL,
 
                      # stage 2
                      stg2.outcome,
@@ -99,6 +101,8 @@ dynamicGP <- function(
                      stg2.tr2.hte=NULL,
                      stg2.tr.values=NULL,
                      stg2.tr.type="Discrete",
+		     stg2.time,
+		     stg2.time.value=NULL,
                      stg2.outcome.type="Continuous",
                      stg2.outcome.bound_censor="neither",
                      stg2.outcome.lb=NULL,
@@ -107,7 +111,7 @@ dynamicGP <- function(
                      stg2.outcome.censor.uv=NULL,
                      stg2.outcome.censor.yn=NULL,
                      stg2.outcome.link="identity",
-                     stg2.pr.values=NULL,
+                     stg2.c.margin=NULL,
 
                      # common parameters
                      burn.num=500,
@@ -147,12 +151,14 @@ dynamicGP <- function(
                         stg1.tr.hte=stg1.tr.hte,
                         stg1.tr.values=stg1.tr.values,
                         stg1.tr.type=stg1.tr.type,
+                        stg1.time=stg1.time,
+                        stg1.time.value=stg1.time.value,
                         stg1.outcome.type=stg1.outcome.type,
                         stg1.outcome.bound_censor=stg1.outcome.bound_censor,
                         stg1.outcome.lb=stg1.outcome.lb, stg1.outcome.ub=stg1.outcome.ub,
                         stg1.outcome.censor.lv=stg1.outcome.censor.lv, stg1.outcome.censor.uv=stg1.outcome.censor.uv,
                         stg1.outcome.censor.yn=stg1.outcome.censor.yn, stg1.outcome.link=stg1.outcome.link,
-                        stg1.pr.values=stg1.pr.values,
+                        stg1.c.margin=stg1.c.margin,
 
                         # stage 2
                         stg2.outcome=stg2.outcome, stg2.treatment=stg2.treatment,
@@ -161,12 +167,14 @@ dynamicGP <- function(
                         stg2.tr2.hte=stg2.tr2.hte,
                         stg2.tr.values=stg2.tr.values,
                         stg2.tr.type=stg2.tr.type,
+                        stg2.time=stg2.time,
+                        stg2.time.value=stg2.time.value,
                         stg2.outcome.type=stg2.outcome.type,
                         stg2.outcome.bound_censor=stg2.outcome.bound_censor,
                         stg2.outcome.lb=stg2.outcome.lb, stg2.outcome.ub=stg2.outcome.ub,
                         stg2.outcome.censor.lv=stg2.outcome.censor.lv, stg2.outcome.censor.uv=stg2.outcome.censor.uv,
                         stg2.outcome.censor.yn=stg2.outcome.censor.yn, stg2.outcome.link=stg2.outcome.link,
-                        stg2.pr.values=stg2.pr.values,
+                        stg2.c.margin=stg2.c.margin,
 
                         burn.num=burn.num, mcmc.num=mcmc.num,
                         x.categorical=x.categorical,
