@@ -39,11 +39,13 @@ test_that("Function get printed results", {
   } else {
     status <- "Failed"
   }
-  result <- pcatsAPIclientR::printgp(jobid)
-  result_lines <- strsplit(result, "\n")
-  expect_equal(result_lines[[1]][3], " A=0 - A=1     -5.048 0.198 -5.415 -4.662         0         0         0")
-})
+  if (status != "Done") {
+    line3 <- ""
+  } else {
+    result <- pcatsAPIclientR::printgp(jobid)
+    result_lines <- strsplit(result, "\n")
+    line3 <- result_lines[[1]][3]
+  }
 
-# if (status=="Done") {
-# cat(pcatsAPIclientR::printgp(jobid))
-# }
+  expect_equal(line3, " A=0 - A=1     -5.048 0.198 -5.415 -4.662         0         0         0")
+})
