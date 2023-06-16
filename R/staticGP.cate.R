@@ -14,31 +14,37 @@
 #' @export
 #' @importFrom methods hasArg
 #'
-staticGP.cate <- function(
-                          jobid,
+staticGP.cate <- function(jobid,
                           x,
                           control.tr,
                           treat.tr,
-                          c.margin=NULL,
-                          token=NULL,
-                          use.cache=NULL) {
-
+                          c.margin = NULL,
+                          token = NULL,
+                          use.cache = NULL) {
   headers <- c()
-  if (!is.null(token)) { headers<-c(headers, "Authorization"=paste("Bearer",token)) }
-  if (!hasArg(use.cache) && Sys.getenv("PCATS_USE_CACHE")!="") use.cache<-Sys.getenv("PCATS_USE_CACHE")
-  if (!is.null(use.cache) && (use.cache==T || use.cache=="1")) { headers<-c(headers, "X-API-Cache"="1") }
-  if (!is.null(use.cache) && (use.cache==F || use.cache=="0")) { headers<-c(headers, "X-API-Cache"="0") }
+  if (!is.null(token)) {
+    headers <- c(headers, "Authorization" = paste("Bearer", token))
+  }
+  if (!hasArg(use.cache) && Sys.getenv("PCATS_USE_CACHE") != "") use.cache <- Sys.getenv("PCATS_USE_CACHE")
+  if (!is.null(use.cache) && (use.cache == T || use.cache == "1")) {
+    headers <- c(headers, "X-API-Cache" = "1")
+  }
+  if (!is.null(use.cache) && (use.cache == F || use.cache == "0")) {
+    headers <- c(headers, "X-API-Cache" = "0")
+  }
 
-  res <- POST(url=paste0('https://pcats.research.cchmc.org/api/job/',jobid,'/staticgp.cate'),
-                  add_headers(headers),
-                  encode='multipart',
-                  body=list(x=x,
-                            control.tr=control.tr,
-                            treat.tr=treat.tr,
-                            c.margin=c.margin
-                  ))
+  res <- POST(
+    url = paste0("https://pcats.research.cchmc.org/api/job/", jobid, "/staticgp.cate"),
+    add_headers(headers),
+    encode = "multipart",
+    body = list(
+      x = x,
+      control.tr = control.tr,
+      treat.tr = treat.tr,
+      c.margin = c.margin
+    )
+  )
   cont <- content(res)
   jobid <- cont$jobid[[1]]
   jobid
-
 }
