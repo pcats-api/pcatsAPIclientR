@@ -11,7 +11,12 @@ Description: Provides an R interface to the 'PCATS' API
     allowing R users to submit tasks and retrieve results.
 License: GNU General Public License
 Encoding: UTF-8
-RoxygenNote: 7.1.1
-Imports: httr, jsonlite, methods, testthat
+RoxygenNote: 7.2.3
+Imports: 
+   httr,
+   jsonlite,
+   methods
+Suggests:
+   testthat
 NeedsCompilation: no
 Packaged: 2021-08-25 03:02:05 UTC; michal
