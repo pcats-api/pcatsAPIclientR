@@ -2,6 +2,7 @@ context("staticgp submission process")
 
 run_staticGP_example <- function() {
   jobid <- staticGP(
+    # datafile = "tests/testthat/example1.csv",
     datafile = "example1.csv",
     outcome = "Y",
     treatment = "A",
@@ -13,6 +14,7 @@ run_staticGP_example <- function() {
     method = "GP",
     tr.type = "Discrete",
     c.margin = "0,1,2"
+    # , use.cache = "0"
   )
   jobid
 }
@@ -48,4 +50,21 @@ test_that("Function get printed results", {
   }
 
   expect_equal(line3, " A=0 - A=1     -5.048 0.198 -5.415 -4.662         0         0         0")
+})
+
+test_that("Function getresults", {
+  jobid <- run_staticGP_example()
+  if (grepl("^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$", jobid, ignore.case = TRUE)) {
+    status <- pcatsAPIclientR::wait_for_result(jobid)
+  } else {
+    status <- "Failed"
+  }
+  if (status != "Done") {
+    line <- ""
+  } else {
+    result <- pcatsAPIclientR::results(jobid)
+    line <- result$staticGP$ate$Contrast
+  }
+
+  expect_equal(line, "A=0 - A=1")
 })

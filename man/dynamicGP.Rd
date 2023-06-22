@@ -114,9 +114,9 @@ dynamicGP(
 
 \item{stg2.x.confounding}{A vector of the name of the confounding variables for stage 2.}
 
-\item{stg2.tr1.hte}{At stage 2, an optional vector specifying cate-gorical variables which may have heterogeneoustreatment effect with the stage 1 treatment variable}
+\item{stg2.tr1.hte}{At stage 2, an optional vector specifying categorical variables which may have heterogeneous treatment effect with the stage 1 treatment variable}
 
-\item{stg2.tr2.hte}{At stage 2, an optional vector specifying cate-gorical variables which may have heterogeneoustreatment effect with the stage 2 treatment variable}
+\item{stg2.tr2.hte}{At stage 2, an optional vector specifying categorical variables which may have heterogeneous treatment effect with the stage 2 treatment variable}
 
 \item{stg2.tr.values}{User-defined values for the calculation of ATE if the treatment variable is continuous for stage 2.}
 
