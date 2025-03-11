@@ -2,9 +2,14 @@ Package: pcatsAPIclientR
 Type: Package
 Title: 'PCATS' API Client
 Version: 1.2.0
-Author: Bin Huang [aut], 
-    Chen Chen [aut], 
-    Michal Kouril [aut, cre]
+Authors@R: c(
+    person("Bin", "Huang", email = "Bin.Huang@cchmc.org",
+           role = c("aut"), comment = c(ORCID = "0000-0001-9724-675X")),
+    person("Chen", "Chen", email = "Chen.Chen@cchmc.org",
+           role = c("aut")),
+    person("Michal", "Kouril", email = "Michal.Kouril@cchmc.org",
+           role = c("aut", "cre"), comment = c(ORCID = "0000-0002-4786-7934"))
+           )
 Maintainer: Michal Kouril <michal.kouril@cchmc.org>
 Description: Provides an R interface to the 'PCATS' API
     <https://pcats.research.cchmc.org/api/__docs__/>,
