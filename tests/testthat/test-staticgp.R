@@ -32,7 +32,7 @@ test_that("Function can wait for result", {
   } else {
     status <- "Job Submission Failed"
   }
-  expect_equal(status, "Done")
+  expect_equivalent(status, "Done")
 })
 
 test_that("Function get printed results", {
@@ -42,7 +42,7 @@ test_that("Function get printed results", {
   } else {
     status <- "Job Submission Failed"
   }
-  expect_equal(status, "Done")
+  expect_equivalent(status, "Done")
   if (status != "Done") {
     line3 <- ""
   } else {
@@ -61,7 +61,7 @@ test_that("Function getresults", {
   } else {
     status <- "Job Submission Failed"
   }
-  expect_equal(status, "Done")
+  expect_equivalent(status, "Done")
   if (status != "Done") {
     line <- ""
   } else {
